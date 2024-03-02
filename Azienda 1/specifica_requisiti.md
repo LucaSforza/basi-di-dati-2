@@ -23,19 +23,19 @@ partecipare ad un numero qualsiasi di progetti.
 - 1.5 Stipendio: Integer
 - 1.6 isDirettore: bool
 
-Data di Afferenza è tra la relazione di Impiegato e Dipartimento
+Afferenza come classe tra Impiegato e Dipartimento per segnarsi le date di afferenza
 
 # 2. Dipartimento
 - 2.1 Nome: Stringa
 - 2.2 NumeroTel: Stringa
 
-Relazione tra Dipartimento e Inpiegato per salvarsi qual'è il direttore
+Associazione tra Dipartimento e Inpiegato per salvarsi qual'è il direttore
 
 # 3. Progetto
 - 3.1 Nome: Stringa
 - 3.2 Budget: Integer
 
-Relazione tra Progetto e inpiegati, ogni inpiegato può partecipare a più progetti e nessuno e ogni progetto ha tanti inpiegati e potenzialmente inizialmente nessuno
+Associazione tra Progetto e impiegati, ogni impiegato può partecipare a più progetti o nessuno e ogni progetto ha tanti inpiegati o potenzialmente inizialmente nessuno
 
 # NOTE:
 In stipendio e il budget dei vari progetti è Integer, ma le prime 2 cifre sono i centesimi
