@@ -1,0 +1,20 @@
+1. Volo
+    1.1. Codice: Stringa
+    1.2. Durata: Minuti
+    1.3. Compagnia aerea
+    1.4. Aereoporto Partenza
+    1.5. Aereoporto Arrivo
+
+2. Compagnia aerea
+    2.1. Nome: Stringa
+    2.2. AnnoF: 1900..*
+    2.3. Città
+        2.3.1. Nome: Stringa
+        2.3.2. NumAbitanti: 0..*
+
+3. Aereoporto
+    3.1. Codice: Stringa
+    3.2 Nome: Stringa
+    3.4. Città // vedere 2.3
+    3.5. Nazione
+        3.4.1. Nome: Stringa
