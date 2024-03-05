@@ -1,0 +1,21 @@
+1. Persona
+    1.1. nome: stringa
+    1.2. CF: stringa
+    1.3. dataN: Data
+    1.4. città nascita
+    1.5. regione nascita
+2. Studente
+    2.1. matricola: int > 0
+    2.2. corso di laurea dov'è iscritto  (con data di iscrizione)
+    2.3. insegnamenti superati
+3. Professore
+    3.1. insegnamenti erogati
+4. Corsi di laurea
+    4.1. nome: stringa
+    4.2. Facoltà
+        4.2.1. nome: stringa
+5. Insegnamento
+    5.1. codice: stringa
+    5.2. nome: stringa
+    5.3. ore lezioni: int > 0
+    5.4. corsi di laurea a cui appartiene
