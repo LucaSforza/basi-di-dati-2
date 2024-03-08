@@ -1,0 +1,11 @@
+- Crociere:
+    Codice: Stringa
+    Data inizio: DataOrario
+    Data fine: DaraOrario
+    - Nave:
+        Nome: Stringa
+        Grado comfort: 3..5
+        nPassegieri: Intero > 0
+- Itinerario:
+    nome: Stringa
+    
