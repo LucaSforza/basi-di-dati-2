@@ -1,0 +1,39 @@
+1. Crociere:
+  1.1 codice:
+  1.2 data di inizio: Data
+  1.3 data di fine: Data
+  1.4 nave utilizzata: (vedi 2)
+  1.5 itinerario: (vedere 4)
+  1.6 il tipo tra:
+    1.6.1 luca di miele:
+    1.6.2 per famiglie:
+      1.6.2.1 se addatto ai bambini:
+
+
+2. nave utilizzata:
+  2.1 nome: Stringa
+  2.2 comfort: 3..5
+  2.3 capienza: intero > 0
+
+3. Porto:
+  3.1 nome: Stringa
+  3.2 continente: Continente {Asia, Europa, ...}
+  3.3 insieme di posti da vedere: (vedere 5)
+  3.4 un tipo tra:
+    3.4.1 romantico
+    3.4.2 divertente
+
+4. itinerario:
+  4.1 sequenza di:
+    4.1.1 porto: (vedi 3)
+    4.1.2 arrivo: ArrivoRel
+    4.1.3 data-arrivo: ArrivoRel
+
+5. Posti da vere:
+  5.1 nome: Stringa
+  5.2 descrizione: Stringa
+  5.3 orari di apertura: forma di mappa che assicia ogni giorno della settimana un insieme di fascie orarie dove ogni fascia oraria è una coppia di orari
+
+
+
+tipo ArrivoRel = (giorni: int > 0, orario: Ora)

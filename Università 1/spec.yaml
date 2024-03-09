@@ -8,7 +8,7 @@
             nome: Stringa
 - Studente:
     matricola: int > 0
-    - corso di laurea dov'è iscritto:
+    - corso di laurea dov'è iscritto SOLO UNO:
         data iscrizione: Intero >= 1900
     - insegnamenti superati: Insegnamenti
 - Professore:
