@@ -1,0 +1,29 @@
+1. Docente
+    1.1. nome
+    1.2. cognome
+    1.3. dataN
+    1.4. matricola
+    1.5. Posizione universitaria che può essere tra:
+        1.5.1. Ricercatore
+        1.5.2. Professore associato
+        1.5.3. Professore Ordinato
+    1.6. progetti ai quali partecipa (anche più di uno) (Vedere 2. )
+
+2. Progetto
+    2.1. nome
+    2.2. acronimo
+    2.3. data inizio
+    2.4. data fine
+    2.5. docenti a cui partecipano ad un progetto (anche più di uno)
+
+3. WorkPackage
+    3.1. progetto a cui fa riferimento (credo solo 1)
+    3.2. nome
+    3.3. data inizio
+    3.4. data fine
+
+4. Impegni
+    4.1. data ed orario
+    4.2. durata in ore
+    4.3. descrizione impegno
+    4.4. motivazione
