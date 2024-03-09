@@ -15,6 +15,7 @@
     2.3. data inizio
     2.4. data fine
     2.5. docenti a cui partecipano ad un progetto (anche più di uno)
+    2.6. workPackages di un progetto
 
 3. WorkPackage
     3.1. progetto a cui fa riferimento (credo solo 1)
