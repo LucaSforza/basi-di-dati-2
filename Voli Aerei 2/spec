@@ -1,0 +1,33 @@
+1. Volo
+    1.1. codice
+    1.2. durata (ore e minuti)
+    1.3. compagnia aerea (singola)
+    1.4. aereoporto di partenza
+    1.5. aereoporto di arrivo
+    1.6. Voli charter
+        1.6.1. veivolo utilizzato (vedi 6)
+        1.6.2. tappe intermedie con ordine, sequenza di:
+            1.6.2.1. aereoporto
+            1.6.2.2. arrivo: orario relativo dalla partenza del volo
+            1.6.2.3. partenza: orario relativo dalla partenza del volo
+
+2. Aereoporto
+    2.1. codice
+    2.2. nome
+    2.3. città con nazione (vedi 4)
+
+3. Compagnia aerea
+    3.1. nome
+    3.2. anno fondazione
+    3.3. città sede della compagnia (vedi 4)
+
+4. Città
+    4.1. nome città
+    4.2. numero abitanti
+    4.3. nazione di appartenenza (vedere 5)
+
+5. Nazione
+    5.1. nome
+
+6. veivolo
+    6.1. nome
