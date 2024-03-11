@@ -1,0 +1,49 @@
+1. Crociere
+    1.1. codice
+    1.2. data inizio
+    1.3. data fine
+    1.4. nave utilizzata (vedere 2)
+    1.5. itinerario (vedere 3)
+    1.6. classificate come:
+        1.6.1. Luna di Miele
+            1.6.1.1. Tradizioneli (lo sono quelle con un numero di destinazioni romantiche >= divertenti e/o alternative)
+            1.6.1.1. Alternative
+        1.6.2. Per famiglie
+            1.6.2.1. sono adatte ai bambini?
+
+2. Nave
+    2.1. nome
+    2.2. grado di comfort: 3..5
+    2.3. numero di passeggeri massimo
+
+3. Itinerario
+    3.1. nome
+    3.2. sequenza ordinata di destinazioni, per ogni destinazione:
+        3.1. Porto (vedi 4)
+        3.2. relativa data di arrivo (giorno relativo dall'inizio della crociera ed orario)
+        3.3. relativa data di partenza (come 3.2)
+    
+
+4. Porto
+    4.1. nome
+    4.2. continete {America, Asia, Africa, Europa, Oceania}
+    4.3. insieme di posti da vedere (vedere 5)
+    4.4. classificate come (possono anche essere entrambe):
+        4.4.1. Romantiche
+        4.4.2. Divertenti
+
+5. Posti di Interesse
+    5.1. nome
+    5.2. descrizione
+    5.3. fascia oraria: forma di mappa che assicia ogni giorno della settimana un insieme di fascie orarie dove ogni fascia oraria è una coppia di orari
+
+6. Clienti
+    6.1. nome
+    6.2. cognome
+    6.3. età
+    6.4. indirizzo
+
+7. Prenotazioni
+    7.1. istante di prenotazione
+    7.2. crociera
+    7.3. numero di posti prenotati
