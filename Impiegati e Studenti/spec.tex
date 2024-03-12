@@ -1,0 +1,57 @@
+% !TEX root = spec.tex
+\documentclass{article}
+\begin{document}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}}
+\renewcommand{\labelenumiv}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}}
+
+\begin{enumerate}
+    \item Persona
+    \begin{enumerate}
+        \item nome
+        \item cognome
+        \item codice fiscale
+        \item data di nascita
+        \item deve essere solo uno delle 2:
+        \begin{enumerate}
+            \item Uomo
+            \begin{enumerate}
+                \item Posizione militare
+            \end{enumerate}
+            \item Donna
+            \begin{enumerate}
+                \item numero maternità
+            \end{enumerate}
+        \end{enumerate}
+        \item può essere uno dei 2:
+        \begin{enumerate}
+            \item Può essere impiegato (vedere 2)
+            \item Può essere studente (vedere 5)
+        \end{enumerate}
+    \end{enumerate}
+    \item Impiegato
+    \begin{enumerate}
+        \item stipendio
+        \item ruolo
+        \begin{enumerate}
+            \item segretario
+            \item direttore
+            \item progettista (vedere 3)
+        \end{enumerate}
+    \end{enumerate}
+    \item Progettista
+    \begin{enumerate}
+        \item respondabili di un progetto (anche no) (anche più di uno) (vedere 4)
+    \end{enumerate}
+    \item Progetto
+    \begin{enumerate}
+        \item responsabile
+        \item nome
+    \end{enumerate}
+    \item Studente
+    \begin{enumerate}
+        \item matricola
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}

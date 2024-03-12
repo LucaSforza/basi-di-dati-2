@@ -1,2 +1,7 @@
 .DS_Store
 *.vpp*
+*.aux
+*.fdb*
+*.fls
+*.log
+*.sync*
