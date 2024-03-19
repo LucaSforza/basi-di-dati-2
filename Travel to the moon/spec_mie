@@ -19,9 +19,9 @@
 3. Itinerario
     3.1. nome
     3.2. sequenza ordinata di destinazioni, per ogni destinazione:
-        3.1. Porto (vedi 4)
-        3.2. relativa data di arrivo (giorno relativo dall'inizio della crociera ed orario)
-        3.3. relativa data di partenza (come 3.2)
+        3.2.1. Porto (vedi 4)
+        3.2.2. relativa data di arrivo (giorno relativo dall'inizio della crociera ed orario)
+        3.2.3. relativa data di partenza (come 3.2)
     
 
 4. Porto
