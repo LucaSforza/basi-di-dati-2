@@ -1,0 +1,34 @@
+Specifica della classe LunaDiMiele
+
+tipoLunaDiMiele(): TipoLuna
+    pre-condizioni: Nessuna
+    post-condizioni:
+        Non modifica il livello estenzionale.
+        Sia D = {
+            insieme di tutte le destionazioni che sono collegate a this.Itineratio mediante l'associazione Fine o Partenza oppure
+            se esiste almeno 1 tappa intermedia nell'itinerario allora anche le destionazioni tappa.Destionazione
+        }
+        Sia R = {insieme di tutte le destionazioni in D romantiche}
+        Sia Div = {insieme di tutte le destionazioni in D divertenti}
+        result = {
+            Tradizionale se |R| ≥ |Div|
+            Divertente altrimenti
+        }
+
+Specifica della classe Crociera
+
+data_fine(): Data
+    pre-condizioni: Nessuna
+    post-condizioni:
+        Non modifica il livello estenzionale
+        result = this.data_inizio + this.Fine.istante.giorno (questa addizione viene interpretato dal sistema come un aumento di giorni rispetto al valore del secondo argomento)
+
+
+Specifica della classe Tappa
+
+n_ordine(): Intero > 0
+    pre-codizioni: Nessuna
+    post-condizioni:
+        Non modifica il livello estenzionale
+        sia T = {insieme di tutte le tappe di cui fa parte l'itinerario tale che instanza_arrivo < this.instanza_arrivo}
+        result = |T| + 1

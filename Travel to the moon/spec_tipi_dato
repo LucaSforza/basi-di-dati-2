@@ -1,6 +1,15 @@
 tipo TipoLuna = {Divertente, Tradizionale}
 tipo Cod = codice secondo standard per il codice delle crociere
+
 tipo DeltaDataOra = (giorno: Intero > 0, orario: Ora)
+
+    operazione tipo DeltaDataOra
+        < (x: DeltaDataOra, y: DeltaDataOra): Booleano
+            ritorna True se e solo se
+                x.giorno > y.giorno
+                    oppure
+                x.giorno == y.giorno and x.ora < y.ora
+
 tipo Cont = {Europa, Asia, Africa, Oceania, America}
 tipo gSettimana = {Lunedì, Martedì, Mercoledì, Giovedì, Venerdì, Sabato, Domenica}
 tipo SerPort = codice secondo standard internazionale dei porti
