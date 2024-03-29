@@ -1,0 +1,29 @@
+1. Officina
+    1.1. nome
+    1.2. indirizzo
+    1.3. numero dipendenti
+    1.4. i dipendenti con data di afferenza
+        1.4.1. tra questi ci sta il direttore
+
+2. Persona
+    2.1. nome
+    2.2. cognome
+    2.3. Codice fiscale
+    2.4. indirizzo
+    2.5. telefono
+    2.6. data nascita
+    2.7. Una persona può essere una tra questi due:
+        2.7.1. dipendente
+            2.7.1.1. che può essere direttore
+        2.7.2. proprietario veicolo
+
+3. Riparazione veicolo
+    3.1. codice Riparazione
+    3.2. veicolo
+        3.2.1. Modello
+        3.2.2. tipo
+        3.2.3. targa
+        3.2.4. anno immatricolazione
+        3.2.5. proprietario
+    3.3. data ed ora accettazione
+    3.4. data ed ora riconsegna (per le riparazioni terminate)
