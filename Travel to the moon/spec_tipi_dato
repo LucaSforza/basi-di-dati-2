@@ -1,5 +1,4 @@
-tipo TipoLuna = {Divertente, Tradizionale}
-tipo Cod = codice secondo standard per il codice delle crociere
+tipo TipoCrocieraLunaDiMiele = {Divertente, Tradizionale}
 
 tipo DeltaDataOra = (giorno: Intero > 0, orario: Ora)
 
@@ -11,5 +10,4 @@ tipo DeltaDataOra = (giorno: Intero > 0, orario: Ora)
                 x.giorno == y.giorno and x.ora < y.ora
 
 tipo Cont = {Europa, Asia, Africa, Oceania, America}
-tipo gSettimana = {Lunedì, Martedì, Mercoledì, Giovedì, Venerdì, Sabato, Domenica}
-tipo SerPort = codice secondo standard internazionale dei porti
+tipo Giorno = {Lunedì, Martedì, Mercoledì, Giovedì, Venerdì, Sabato, Domenica}

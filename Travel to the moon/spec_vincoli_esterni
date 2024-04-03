@@ -1,12 +1,15 @@
 [V.Crociera.massimo_num_passeggieri]
-    Sia n = nave a cui è associata la Crociera
-    Sia P = {insieme delle prenotazioni dei clienti}
+    per ogni instanza di Crociera c
+    Sia n = nave a cui è associata la c
+    Sia P = {insieme delle prenotazioni dei clienti alla crociera c}
     la somma dei posti prenotati dai clienti deve essere ≤ n.maxPassegieri
 
 [V.Tappa.partenza_arrivo]
-    this.instante_arrivo < this.partenza
+    per ogni t tappa, allora:
+    t.instante_arrivo < t.partenza
 
 [V.Itineratio.partenza_arrivo2]
-    Sia T = {insieme di tappe associate all'itinerario}
-    Per ogni t che appartiene a T tale che esiste t' che appartiene a T tale che t.n_ordine() < t'.n_ordine()
-    allora t.partenza < t'.instante_arrivo
+    per ogni instanza di Itinerario "i" 
+    Sia T = {insieme di tappe associate a i}
+    Per ogni t che appartiene a T tale che esiste t' che appartiene a T tale che t.ordineTappa() < t'.ordineTappa()
+    allora t.arrivo < t'.partenza
