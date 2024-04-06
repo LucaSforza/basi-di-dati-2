@@ -13,3 +13,8 @@
     Sia T = {insieme di tappe associate a i}
     Per ogni t che appartiene a T tale che esiste t' che appartiene a T tale che t.ordineTappa() < t'.ordineTappa()
     allora t.arrivo < t'.partenza
+
+[V.Itinerario.partenza_arrivo3]
+    per ogni istanza di Itinerario "i"
+    Sia T = {insieme di tutte le instanze di tappa associate ad i}
+    allora per ogni t che appartiane a T t.partenza < i.Arrivo.instante

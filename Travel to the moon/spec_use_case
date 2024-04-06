@@ -1,0 +1,28 @@
+specifica dello use-case Prenotazioni Utente
+
+    prenotazione(c: Crociera, istante_prenotazione: DataOra, num_posti_prenotati: Intero > 0): Prenotazione
+        Precondizioni: 
+            Sia n la nave associata a c
+            Sia P = {insieme di tutti gli oggetto di classe prenotazione che sono accettati}
+            sia sum = la somma di tutti i posti prenotati per ogni p che appartiene a P
+            allora sum + num_posti_prenotati <= c.numero_massimo_passeggeri
+        Post-condizioni: 
+            modifica lo spazio estenzionale
+            viene istanziata un nuovo oggetto della classe prenotazione con attributi istante_prenotazione e num_posti_prenotati
+            essa viene associata alla classe c
+
+specifica dello use-case Prenotazioni Ufficio
+
+    confermaPrenotazione(p: Prenotazione)
+    Precondizioni: Nessuna
+    Postcondizioni:
+        Sia c la crociera associata a p
+        Sia n la nave associata a c
+        Sia P = {insieme di tutti gli oggetto di classe prenotazione che sono accettati}
+        sia sum = la somma di tutti i posti prenotati per ogni p che appartiene a P
+        allora se sum + num_posti_prenotati <= c.numero_massimo_passeggeri allora p diventa accettata
+        altrimenti p diventa rifiutata
+
+specifica dello use-case Operazioni Statistiche
+    TODO: rifare quando si sa la logica del primo ordine
+    
