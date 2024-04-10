@@ -7,6 +7,7 @@
     2.2. categoria
         2.2.1. nome categoria
     2.4. metodo pagamento
+        2.4.1. nome metodo pagamento
     2.5. Usato
         2.5.1. può avere garanzia
         2.5.2. condizioni = {ottimo, buono, discreto, da sistemare}
@@ -16,13 +17,12 @@
         2.7.1. prezzo iniziale
         2.7.2. ammontare dei rialzi
         2.7.3. istante fine asta
-        2.7.4. venduti al primo cliente (utente) che ne fa richiesta
+        2.7.4. oggetto di offerte da più utenti
         2.7.5. operazione che indica se l'asta si è conclusa qual'è stato utente vincitore
         2.7.6. operazione che indica il prezzo per cui è stato venduto l'oggetto nel post
     2.8. Post che NON prevedono asta
         2.8.1. prezzo
-        2.8.2. oggetto di offerte da più utenti
-
+        2.8.2. venduti al primo cliente (utente) che ne fa richiesta
 
 3. Bid
     3.1. istante in cui è stato proposto
