@@ -1,0 +1,53 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{centernot}
+
+\begin{document}
+    Soluzioni gruppo 50 Esercitazione A.3.2:
+
+    \begin{enumerate}
+        \item \begin{equation}
+            \begin{gathered}
+                \forall p (Persona(p) \implies \exists t \text{ haTelefono}(p,t))
+                \\\land\\ \forall z (Persona(z) \implies \neg Telefono(z))
+                \\\land\\ \forall x,y  (\text{ haTelefono}(x,y) \implies Persona(x) \land Telefono(y))
+            \end{gathered}
+        \end{equation}
+        \item \begin{equation}
+            \begin{gathered}
+                \forall p (Persona(p) \implies \exists n \text{ siChiama}(p,n))
+                \\\land\\
+                \forall a \exists b (\text{ siChiama}(a,b) \implies \neg \exists \hat{b} \text{ siChiama(a,$\hat{b}$)} \land \hat{b}\not =b)
+                \\\land\\
+                \forall x (Persona(x) \implies \neg Stringa(x))
+                \\\land\\
+                \forall z,y (\text{ siChiama(z,y)} \implies Persona(z) \land Stringa(y))
+            \end{gathered}
+        \end{equation}
+
+        \item \begin{equation}
+            \begin{gathered}
+                %so che è sbagliato perché se un dipendente non lavora ad almeno a 2 dipartimenti allora questo è falso, ma dovrebb essere vero
+                \forall d \exists a,b ((lavora(d,a) \land lavora(d,b) \land a\not =b)\implies\\
+                \neg \exists c (lavora(d,c) \land c\not =a \land c\not =b))
+            \end{gathered}
+        \end{equation}
+
+        \item \begin{equation}
+            \begin{gathered}
+                \forall d (dipartimento(d) \implies \exists dir \text{ dirige}(d,dir)) % 1..
+                \\\land\\
+                \forall x,y (dirige(x,y) \implies dipartimento(x) \land direttore(y))
+                \\\land\\
+                \forall z (direttore(z) \implies persona(z))
+                \\\land\\
+                \forall \alpha (persona(\alpha) \implies \neg dipartimento(\alpha))
+                \\\land\\
+                \forall \beta \exists \gamma (dirige(\beta,\gamma) \implies \neg \exists \pi dirige(\beta,\pi) \land \pi\not =\gamma)
+            \end{gathered}
+        \end{equation}
+    
+    \end{enumerate}
+\end{document}
