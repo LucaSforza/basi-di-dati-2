@@ -1,0 +1,86 @@
+Use case operazioniUtente
+
+iscrizione(nickame: Stringa): Utente
+    pre-condizioni: ALL u Utente(u) -> nickname(u) != nickname
+    post-condizioni: viene istanziata un oggetto della classe utente con il nickame uguale al parametro nickname
+    e come istanteIscrizione = now
+
+pubblicareVideo(titolo: Stringa, descrizione: Stringa,tag: Stringa [1..*], categoria: Categoria,pathFileVideo: Path): VideoPubblico
+    pre-condizioni: ALL v Video(v) -> titolo(v) != titolo
+    post-condizioni: result è uguale ad un oggetto istanziato della classe VideoPubblico con i campi che sono
+    quelli di questa operazioni e pathFileVideo gestito dal sistema (il pathFileVideo in input è il path all'intero 
+    del dispositivo dell'utente che però viene modificato in modo che punti al path all'interno dei server del sistema), durata secondi
+    estratti analizzando il video e istantePub settato a now.
+
+crearePlaylistPubblica(nome: Stringa): PlaylistPubblica
+    pre-condizioni: ALL p Playlist(p) -> nome(p) != nome
+    post-condizioni: result è uguale ad un'oggetto istanziato della classe PlaylistPubblica con il campo nome uguale al parametro
+    dell'operazione nome e come istantePub = now
+
+crearePlaylistPrivata(nome: Stringa): PlaylistPrivata
+    pre-condizioni: ALL p Playlist(p) -> nome(p) != nome
+    post-condizioni: result è uguale ad un'oggetto istanziato della classe PlaylistPrivata con il campo nome uguale al parametro
+    dell'operazione nome e come istantePub = now
+
+pushVideo(p: Playlist, v: VideoPubblico)
+    Let P = {v' | vid-pla(v',p)}
+
+    pre-condizioni: v NOT IN P
+    post-condizioni:
+    viene istanziata una nuova assosiation class collegata alla playlist p
+    e al video pubblico v con ordine |P| + 1
+
+removeVideo(p: Playlist, index: Intero > 0)
+    Let P = {v' | vid-pla(v',p)}
+
+    pre-condizioni: |P| >= Index
+    post-condizioni: ALL v vid-pla(v,p) AND ordine(v) = index -> viene destianziato v
+    AND
+    ALL v' vid-pla(v',p) AND ordine(v') > index -> ordine(v') = ordine(v')-1
+
+addVideo(p: Playlist,v: VideoPubblico, index: Intero > 0)
+    Let P = {v' | vid-pla(v',p)}
+    pre-condizioni: |P| >= Index
+    AND
+    v NOT IN P
+    post-condizioni: ALL v' vid-pla(v,p) AND ordine(v') >= index -> ordine(v') = ordine(v')+1
+    viene istanziato un oggetto della classe Inserito con campo ordine = index e associato
+    come video a v e come playlist a p.
+
+cronologia(u: Utente): Visualizzazione [0..*]
+    pre-condizioni: nessuna
+    post-condizioni:
+        V = {v | ute-vis(u,v)}
+        result = V
+
+addValutazione(u: Utente,v: VideoPubblico, x: 0..5)
+    pre-condizioni:
+        NOT ute-vid(u,v)
+            AND
+        EXISTS v' (
+            ute-vis(u,v') AND vid-vis(v,v')
+        )
+            AND
+        NOT Valutazione(u,v)
+    post-condizioni:
+        creazione associazione Valutazione(u,v)
+        e val(u,v,x) AND istantePub(u,v,now)
+
+addCommento(u: Utente, v: VideoPubblico, testo: Stringa)
+    pre-condizioni: EXISTS v' ute-vis(u,v') AND vid-vis(v,v')
+    post-condizioni:
+        istanziata oggetto della classe commento c
+        istantePub(c,now) AND testo(c,testo)
+
+searchPlaylist(u_usecase: Utente, u: Utente): PlaylistPubblica [0..*]
+    pre-condizioni: nessuna
+    post-condizioni:
+        P = {p | PlaylistPubblica(p) AND pla-ute(p,u)}
+        result = P
+
+searchVideo(c: Categoria, tag: Stringa [0..*],val: 0..5): VideoPubblico [0..*]
+    pre-condizioni: nessuna
+    post-condizioni:
+        result = {v | VideoPubblico(v) AND ((EXISTS t tag(v,t) AND t IN tag) OR |tag| = 0) AND (v.numValutazioni() = 0 OR v.mediaValutazioni() >= val)}
+
+USE 

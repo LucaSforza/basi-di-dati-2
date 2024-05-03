@@ -1,0 +1,37 @@
+[V.VideoRisposta.maiRispostaSeStesso]
+    ALL x,y pub-ris(x,y) -> (
+        ALL u,u' ute-vid(u,x) AND ute-vid(u',y) -> u != u'
+    )
+
+[V.Video.istantePub]
+TODO: modificare gli attributi nel come sono definiti e fare come sono definiti nella slide A.4
+    ALL v Video(v) -> (
+        ALL x vid-vis(v,x) -> istantePub(v) <= istantePub(x)
+            AND 
+        ALL c com-vid(c,v) -> istantePub(v) <= istantePub(c)
+            AND 
+        ALL u ute-vid(u,v) -> istanteIscrizione(u) >= istantePub(v)
+            AND
+        ALL v' val-vid(v',v) -> istantePub(v) <= istantePub(v')
+    )
+
+[V.Utente.tempoIscrizioneCosistente]
+    ALL u Utente(u) -> (
+        ALL v ute-vis(u,v) -> istantePub(v) >= istanteIscrizione(u)
+            AND 
+        ALL c com-ute(c,u) -> istantePub(c) >= istanteIscrizione(u)
+            AND
+        ALL v' ute-val(u,v') -> istantePub(v') >= istanteIscrizione(u)
+    )
+
+[V.Commento.PerPoterPubblicare]
+    ALL v ALL c ALL u com-ute(c,u) AND com-vid(c,v) -> (
+        EXISTS v' vid-vis(v,v') AND ute-vis(u,v') AND istantePub(v') <= istantePub(c)
+    )
+
+[V.Valutazione.PerPoterPubblicare]
+    ALL v ALL v' ALL u ute-val(u,v') AND val-vid(v',v) -> (
+        EXISTS v'' vid-vis(v,v'') AND ute-vis(u,v'') AND istantePub(v'') <= istantePub(v')
+    )
+[V.Valutazioni.maiVotareSeStesso]
+    ALL u,v,x Valutazione(u,v,x) -> NOT ute-vid(u,v)

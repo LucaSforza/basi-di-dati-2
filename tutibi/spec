@@ -1,0 +1,54 @@
+1. Utente
+    1.1. nome
+    1.2. data iscrizione
+    1.3. operazione che dato in input un video da in output il numero di visualizzazioni dell'utente per quel video
+    1.4. l'utente può valutare ogni video al più una volta (tranne quelli pubblicati da lui) con un valore da 0 a 5 (solo per quelli visionati)
+
+2. Video
+    2.1. titolo 
+    2.2. durata 
+    2.3. descrizione
+    2.4. path del file 
+    2.5. tag (almeno uno)
+    2.6. categoria (unica)
+    2.7. può essere risposta ad un altro video, ATTENZIONE MAI RISPOSTA A SE STESSO
+    2.8. può essere censurato e quindi non più visibile
+
+3. Visualizzazione
+    3.1. utente che visualizza
+    3.2. data e ora della visualizzazione 
+    3.3. video visualizzato
+
+4. Commento
+    4.1. utente che commenta
+    4.2. video da commentare
+    4.3. il video da commentare deve essere già visionato dall'utente
+    4.4. si può commentare lo stesso video più volte
+    4.4. data e ora 
+    4.5. testo
+
+5. Playlist 
+    5.1. collezione ordinata di video 
+    5.2. possono essere pubbliche o private
+    5.3. nome 
+    5.4. data ed ora di creazione
+    5.5. il sistema deve permettere ad ogni utente di ottenere le playlist pubbliche di un altro utente a sua scelta.
+
+USE CASE 
+
+1. Utente 
+    1.1. possibilità di iscriversi
+    1.2. pubblicare nuovi video 
+    1.3. creare o modificare playlist 
+    1.4. esprimere valutazioni suoi video 
+    1.5. commentare un video
+    1.6. ricerca dei video
+        1.6.1. data una categoria,
+        un insieme di tag, ed un intero v tra 0 e 5,
+        si vogliono restituire tutti i video disponibili di quella categoria che posseggono 
+        almeno uno tra i tag indicati, e che abbiano una valutazione media di almeno v (se non ha valutazioni viene restituito comunque)
+    1.7. cercare data una categoria e un intero > 0 n i video che hanno maggiore numero di video in risposta (i primi n)
+    1.8. dato un utente posso visualizzare le sue playlist pubbliche
+
+2. Redazione
+    2.1. dato un video bisogna censurarlo

@@ -1,0 +1,62 @@
+\documentclass{article}
+
+\begin{document}
+    TuTubi deve consentire la registrazione degli utenti, di cui interessa il nome e la data
+    di iscrizione. Gli utenti registrati possono pubblicare video, visualizzare quelli disponibili,
+    oltre che esprimere su di essi valutazioni e commenti testuali.
+    \section{Specifica classe Video}
+    In particolare, di un video pubblicato da un utente interessa conoscere il titolo, la
+    durata e la descrizione (oltre che il nome del file dove questo viene memorizzato da
+    parte del sistema).
+    Inoltre, di ogni video interessa conoscere la categoria (unica) a
+    cui appartiene, oltre che un insieme di parole chiave dette tag (almeno una) che ne
+    descrivano il contenuto in modo più strutturato. Delle categorie e dei tag interessa il
+    nome.
+    \section{Risposta ai video in modo consistente}
+    TuTubi deve anche permettere ad un utente di pubblicare un nuovo video segnalando
+    che si tratta di una risposta ad un video già esistente (utile per temi come la politica dove
+    vi possono essere posizioni diverse che stimolano un dibattito). TuTubi deve mantenere
+    tale informazione in modo consistente, garantendo che nessun utente possa pubblicare
+    un video in risposta ad un video pubblicato da sé stesso.
+    \section{Cronologia e visualizzazioni}
+    TuTubi deve poi fornire un servizio di cronologia, ricordando la sequenza di tutti i
+    video visionati da ogni singolo utente, con relativa data e ora. Inoltre, per ogni video
+    interessa conoscere il numero complessivo di volte che è stato visionato.
+    \section{valutazioni}
+    Gli utenti di TuTubi devono inoltre avere la facoltà di esprimere una valutazione
+    (un valore da 0 \emph{pessimo} a 5 \emph{ottimo}) per ogni video che visionano. Tali valutazioni
+    serviranno poi al sistema per promuovere i video più belli (cfr. seguito) e scovare i più
+    brutti. Tuttavia, per evitare degenerazioni nel meccanismo delle votazioni, l’utente che
+    ha pubblicato un video non può votarlo, mentre ogni altro utente può votarlo al più una
+    volta, indipendentemente dal numero di volte che l’ha visionato. In ogni caso però deve
+    essere impossibile per un utente votare un video che non ha mai visionato.
+    \section{Commenti}
+    Inoltre, per favorire uno spirito di comunità tra gli utenti del servizio, si prevede che
+    questi possano esprimere commenti testuali ai video che visionano (dei quali interessa
+    anche data e ora). A differenza delle valutazioni, un utente può esprimere più commenti
+    per lo stesso video. Anche qui, non deve essere permesso ad un utente di scrivere
+    commenti per video che non ha mai visionato.
+    \section{playlist}
+    Ogni utente può creare delle playlist personali, ovvero delle collezioni ordinate di
+    video che gradisce vedere, oppure vuole condividere con altri utenti. Le playlist infatti
+    (di cui interessa il nome e la data di creazione) possono essere pubbliche o private: solo
+    le playlist pubbliche possono essere visualizzate dagli altri utenti. A tal fine, il sistema
+    deve permettere ad ogni utente di ottenere le playlist pubbliche di un altro utente a sua
+    scelta.
+    \section{Use Case Utente}
+    TuTubi deve permettere ad un utente di iscriversi, pubblicare nuovi video, creare e
+    modificare le sue playlist, ed esprimere valutazioni e commenti sui video che visiona.
+    Inoltre, TuTubi deve consentire la ricerca di video: in particolare, data una categoria,
+    un insieme di tag, ed un intero v tra 0 e 5, si vogliono restituire tutti i video disponibili
+    di quella categoria che posseggono almeno uno tra i tag indicati, e che abbiano una
+    valutazione media di almeno v (se un video non ha ancora alcuna valutazione, deve
+    essere restituito comunque). TuTubi deve poi permettere di cercare, data una categoria,
+    i video di quella categoria che hanno il numero maggiore di video in risposta, al fine di
+    isolare le discussioni più animate tra gli utenti.
+    \section{Use Case Redazione}
+    La redazione di TuTubi ha infine la facoltà di censurare dei video, ad esempio perché
+    di contenuto coperto da copyright, osceno, ecc. Un video censurato non può essere né
+    visionato, né votato, né commentato, né aggiunto ad alcuna playlist, né restituito come
+    risultato di una ricerca. Un video, una volta censurato, non può tornare più visibile. Il
+    motivo di una censura deve essere mantenuto nel sistema per usi interni.
+\end{document}

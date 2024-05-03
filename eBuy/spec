@@ -1,6 +1,18 @@
 1. Utente
     1.1. nickname {id}
     1.2. data registrazione
+    1.3. Venditore
+        1.3.1. URL
+        1.3.2. informazioni legali
+        1.3.3. possono solo vendere non comprare
+        1.3.4. popolarità = {bassa, media, alta}
+            1.3.4.1. dipende dal NUMERO DI UTENTI che hanno effettuato negli ultimi 12 mesi bid per gli articoli da loro
+            messi all’asta, o che hanno acquistato (sempre negli ultimi 12 mesi) articoli secondo la
+            modalità “compralo subito”.
+            1.3.4.2. bassa se è inferiore a 50, media se è tra 50 e 300 e alta se è superiore a 300
+    1.4. affidabilità
+        1.4.1. Sia m la media aritmetica dei feedback, Sia z la frazione dei feedback negativi
+        rispetto a quelli totali allora l'affidabilità è m*(1-z)/5.
 
 2. Post
     2.1. descrizione
@@ -28,3 +40,14 @@
     3.1. istante in cui è stato proposto
     3.2. utente offerente (chiamato bidder)
     3.3. operazione valore proposto per quel bid.
+
+4. Categoria
+    4.1. le categorie sono organizzate ad albero
+    4.2. l'albero è unito
+    4.3. da ogni categoria deve essere possibile ottenere le sottocategorie
+
+5. Feedback
+    5.1. dedicato agli utenti che si aggiudicano un asta oppure se hanno comprato secondo la modalità compro-subito.
+    5.2. valore = 0..5
+    5.3. PUO' avere un commento testuale
+    5.4. un feedback può arrivare sia per un utente che per un venditore professionale
