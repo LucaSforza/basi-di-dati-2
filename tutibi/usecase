@@ -1,16 +1,19 @@
 Use case operazioniUtente
 
 iscrizione(nickame: Stringa): Utente
-    pre-condizioni: ALL u Utente(u) -> nickname(u) != nickname
+    pre-condizioni: ALL u,n nickname(u,n) -> n != nickname
     post-condizioni: viene istanziata un oggetto della classe utente con il nickame uguale al parametro nickname
     e come istanteIscrizione = now
 
-pubblicareVideo(titolo: Stringa, descrizione: Stringa,tag: Stringa [1..*], categoria: Categoria,pathFileVideo: Path): VideoPubblico
+pubblicareVideo(titolo: Stringa, descrizione: Stringa,tag: Tag [1..*], categoria: Categoria,pathFileVideo: Path): VideoPubblico
     pre-condizioni: ALL v Video(v) -> titolo(v) != titolo
     post-condizioni: result è uguale ad un oggetto istanziato della classe VideoPubblico con i campi che sono
     quelli di questa operazioni e pathFileVideo gestito dal sistema (il pathFileVideo in input è il path all'intero 
     del dispositivo dell'utente che però viene modificato in modo che punti al path all'interno dei server del sistema), durata secondi
     estratti analizzando il video e istantePub settato a now.
+
+pubblicaVideoRisposta(titolo: Stringa, descrizione: Stringa,tag: Tag [1..*], categoria: Categoria,pathFileVideo: Path, risposta: VideoPubblico)
+    TODO
 
 crearePlaylistPubblica(nome: Stringa): PlaylistPubblica
     pre-condizioni: ALL p Playlist(p) -> nome(p) != nome
@@ -81,6 +84,17 @@ searchPlaylist(u_usecase: Utente, u: Utente): PlaylistPubblica [0..*]
 searchVideo(c: Categoria, tag: Stringa [0..*],val: 0..5): VideoPubblico [0..*]
     pre-condizioni: nessuna
     post-condizioni:
-        result = {v | VideoPubblico(v) AND ((EXISTS t tag(v,t) AND t IN tag) OR |tag| = 0) AND (v.numValutazioni() = 0 OR v.mediaValutazioni() >= val)}
+        result = {v | 
+        VideoPubblico(v) AND
+        ((EXISTS t tag(v,t) AND t IN tag) OR |tag| = 0)
+        AND (v.numValutazioni() = 0 OR v.mediaValutazioni() >= val)
+    }
 
-USE 
+Use case operazioniRedazione
+
+censuraVideo(v: VideoPubblico, motivo: Stringa)
+    pre-condizioni: nessuna
+    post-condizioni:
+    il video passa da VideoPubblico a VideoCensurato e viene impostato l'attributo motivo con
+    il parametro motivo di questa operazione
+    Tutti i collegamenti Inserito alle playlist vengono cancellati

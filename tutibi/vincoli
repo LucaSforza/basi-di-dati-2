@@ -30,6 +30,7 @@ TODO: modificare gli attributi nel come sono definiti e fare come sono definiti 
     )
 
 [V.Valutazione.PerPoterPubblicare]
+TODO cambiare qua, valutazione non scritta correttamente
     ALL v ALL v' ALL u ute-val(u,v') AND val-vid(v',v) -> (
         EXISTS v'' vid-vis(v,v'') AND ute-vis(u,v'') AND istantePub(v'') <= istantePub(v')
     )
