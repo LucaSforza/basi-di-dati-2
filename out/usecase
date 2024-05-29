@@ -42,3 +42,18 @@ ricerca(t: TipologiaSpettacolo, g: Genere,d: Data): Spettacolo[0..*]
         S = {s | ALL e,i,di ero_spe(e,s) AND inizio(e,i) AND data(i,di) AND gen_spe(g,s) AND spe_tip(s,t) AND d = di }
 
         result = S
+
+specifica dello usecase consiglio
+
+consiglio(): Spettacolo [0..*]
+Sia u: Utente la istanza della classe Utente riferita all attore Utente
+pre-condizioni: EXISTS p,u,e pre_ute(p,u) AND ero_pre(e,p)
+post-condizioni:
+    Non modifica lo spazio estenzionale
+    Sia S = {(g,i) | EXISTS p,e pre_ute(p,u) AND ero_pre(e,p) AND ero_spe(e,s) AND instante(e,i)}
+    Sia M = arg max i # TODO:
+            (g,i) in S
+    result = {s | EXISTS i,e ero_spe(e,s) AND inizio(e,i) AND ALL (g,i^) in M AND gen_spe(g,s) AND (
+        ALL d1,d2 data(i,d1) AND data(adesso,d2) -> d1 > d2 AND d1 < d2 + 7
+    ) }
+

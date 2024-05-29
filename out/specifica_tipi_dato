@@ -1,1 +1,2 @@
 tipo Euro = Reale > 0
+tipo Ind = (via: Stringa, civico: Stringa secondo standard)

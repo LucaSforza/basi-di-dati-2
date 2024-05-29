@@ -1,0 +1,45 @@
+tipologiaSede(_nome: StringM_);
+
+Sede(_id: serial_,nome: StringM, cognome: StringM,tipologiaSede: StringM)
+    foreign key: tipologiaSede references TipologiaSede(nome);
+
+TipologiaSala(_nome: StringM_)
+
+Sala(_id: serial_,nome: StringM,sede: integer,tipologiaSala: StringM)
+    altra chiave: (nome,sede)
+    foreign key: sede references Sede(id)
+    foreign key: tipologiaSala references TipologiaSala(nome);
+
+Settore(_id: serial_,nome: StringM, costoPosto: Euro, costoRidotto: Euro,sala: integer)
+    altra chiave: (nome,sala)
+    foreign key: sala references Sala(id);
+
+Posto(_fila: IntegerGZ,colonna: IntegerGZ,settore: integer_)
+    foreign key: settore references Settore(id);
+
+Genere(_nome: StringM_)
+
+TipologiaSpettacolo(_nome: StringM_)
+
+Spettacolo(_id: serial_,nome: StringM,durataMinuti: IntegerGZ,tipologiaSpettacolo: StringM, genere: StringM)
+    foreign key: genere references Genere(nome)
+    foreign key; tipologiaSpettacolo references tipologiaSpettacolo(nome)
+
+
+Erogato(_id: serial_, inizio: timestamp,sala: integer,spettacolo: integer)
+    foreign key: sala references Sala(id)
+    foreign key: spettacolo references Spettacolo(id)
+
+Artista(_id: serial_, nome: StringM, cognome: StringM)
+
+art_spe(_artista: integer, spettacolo: integer_)
+    foreign key: artista references Artista(id)
+    foreign key: spettacolo references Spettacolo(id)
+
+Utente(_codiceFiscale: CF_,nome: StringM, cognome: StringM)
+
+Prenotazione(_id: serial_,numPrenotatatiPieni: IntegerGEZ, numPrenotatatiRidotto: IntegerGEZ,istante: timestamp,utente: CF,erogato: integer)
+    altra chiave: (istante,utente)
+    foreign key: utente references Utente(codiceFiscale)
+    foreign key: erogato references Erogato(id)
+
