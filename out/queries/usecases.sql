@@ -63,12 +63,13 @@ select spettacoliErogatiNeiProssimiSetteGiorni(g)
 from genere as g;
 
 -- use case consiglio
-
 create or replace function consiglio(u Utente)
-returns table(spec integer)
+returns table(spec integer) as $$
 begin
     return query(
-        
+		select spettacoliErogatiNeiProssimiSetteGiorni(g) as spec
+		from ultimoSpettacoloPrenotato(u) as s,genere as g
+		where s.genere = g.nome
     );
 end;
 $$ language plpgsql;
