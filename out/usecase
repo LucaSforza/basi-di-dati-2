@@ -52,7 +52,7 @@ pre-condizioni: nessuna
 post-condizioni:
 non modifica lo spazio estenzionale
 R = {s | EXISTS e,i gen_spe(g,s) AND ero_spe(e,s) AND inizio(e,i) AND (
-    ALL d1,d2 data(i,d1) and data(adesso,d2) -> d1 > d2 AND d2 + 7 < d1
+    ALL d1,d2 data(i,d1) and data(adesso,d2) -> d1 > d2 AND d2 + 7 > d1
 )}
 result = R
 
