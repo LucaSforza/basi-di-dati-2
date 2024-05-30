@@ -11,7 +11,7 @@ begin
     end if;
 
     -- post condizioni
-    return (
+    return ( -- vedere metodo migliore per estrarre il massimo
         select s
         from spettacolo as s,prenotazione as p, erogato as e
         where p.erogato = e.id 
