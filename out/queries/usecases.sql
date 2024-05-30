@@ -16,3 +16,22 @@ begin
 	);
 end;
 $$ language plpgsql;
+
+-- usecase ricerca
+create or replace function ricerca(
+	t TipologiaSpettacolo,
+	g Genere,
+	d date
+)
+returns Spettacolo as $$
+begin
+	return (
+    SELECT s
+	FROM spettacolo as s, erogato as e
+	WHERE s.genere = g.nome 
+		and s.tipologiaSpettacolo = t.nome
+		and e.spettacolo = s.id
+		and date(e.inizio) = d;
+    );
+end;
+$$ language plpgsql;
