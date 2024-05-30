@@ -17,7 +17,7 @@ prenota(numPrenotatiPieni: Intero >= 0, numPrenotatiRidotti: Intero >= 0, s: Set
     pre-condizioni: 
         numPrenotatiPieni + numPrenotatiRidotti > 0
             AND
-        ALL n postiLiberi_{Settore,"Intero >= 0"}(s,n) -> numPrenotatiPieni + numPrenotatiRidotti <= n
+        ALL n postiLiberi_{Settore,"Intero >= 0"}(s,e,n) -> numPrenotatiPieni + numPrenotatiRidotti <= n
             AND
         ALL i inizio(e,i) -> i > adesso
     post-condizioni:
@@ -43,17 +43,28 @@ ricerca(t: TipologiaSpettacolo, g: Genere,d: Data): Spettacolo[0..*]
 
         result = S
 
+specifica dello usecase utilsConsiglio
+
+spettacoliErogatiNeiProssimiSetteGiorni(g: Genere): Spettacolo [0..*]
+
+pre-condizioni: nessuna
+
+post-condizioni:
+non modifica lo spazio estenzionale
+R = {s | EXISTS e,i gen_spe(g,s) AND ero_spe(e,s) AND inizio(e,i) AND (
+    ALL d1,d2 data(i,d1) and data(adesso,d2) -> d1 > d2 AND d2 + 7 < d1
+)}
+result = R
+
+
 specifica dello usecase consiglio
 
 consiglio(): Spettacolo [0..*]
 Sia u: Utente la istanza della classe Utente riferita all attore Utente
-pre-condizioni: EXISTS p,u,e pre_ute(p,u) AND ero_pre(e,p)
+pre-condizioni: EXISTS p,pre_ute(p,u)
 post-condizioni:
     Non modifica lo spazio estenzionale
-    Sia S = {(g,i) | EXISTS p,e pre_ute(p,u) AND ero_pre(e,p) AND ero_spe(e,s) AND instante(e,i)}
-    Sia M = arg max i # TODO:
-            (g,i) in S
-    result = {s | EXISTS i,e ero_spe(e,s) AND inizio(e,i) AND ALL (g,i^) in M AND gen_spe(g,s) AND (
-        ALL d1,d2 data(i,d1) AND data(adesso,d2) -> d1 > d2 AND d1 < d2 + 7
-    ) }
+    ALL s,g ultimoSpettacoloPrenotato_{Utente,Spettacolo}(u,s) AND gen_spe(g,s) -> (
+        spettacoliErogatiNeiProssimiSetteGiorni_{Genere,Spettacolo [0..*]}(g,result)
+    )
 

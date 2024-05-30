@@ -104,12 +104,14 @@ CREATE TABLE Utente (
 -- Tabella per prenotazione
 CREATE TABLE Prenotazione (
     id SERIAL PRIMARY KEY,
-    numPrenotatatiPieni IntegerGEZ NOT NULL,
-    numPrenotatatiRidotto IntegerGEZ NOT NULL,
+    numPrenotatiPieni IntegerGEZ NOT NULL,
+    numPrenotatiRidotto IntegerGEZ NOT NULL,
     istante TIMESTAMP NOT NULL,
     utente CF NOT NULL,
     erogato INTEGER NOT NULL,
+    settore INTEGER NOT NULL,
     UNIQUE (istante,utente),
     FOREIGN KEY (utente) REFERENCES Utente(codiceFiscale),
-    FOREIGN KEY (erogato) REFERENCES Erogato(id)
+    FOREIGN KEY (erogato) REFERENCES Erogato(id),
+    FOREIGN KEY (settore) REFERENCES Settore(id)
 );

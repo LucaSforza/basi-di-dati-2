@@ -30,8 +30,13 @@ INSERT INTO Settore (nome, costoPosto, costoRidotto, sala) VALUES
 INSERT INTO Posto (fila, colonna, settore) VALUES 
 (1, 1, 1), 
 (1, 2, 1), 
+(1, 3, 1),
+(1, 4, 1),
 (1, 3, 2), 
-(2, 1, 2);
+(2, 1, 2),
+(2, 2, 2),
+(2, 3, 2)
+on conflict (fila, colonna, settore) do nothing;
 
 -- Inserimento dati per Genere
 INSERT INTO Genere (nome) VALUES 
