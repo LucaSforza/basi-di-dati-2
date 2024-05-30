@@ -47,3 +47,13 @@ pre-condizioni: EXISTS p pre_ute(p,this)
 post-condizioni:
     Sia R = {(i,s) | EXISTS e,p pre_ute(p,this) AND ero_pre(e,p) AND ero_spe(e,s) AND istantePrenotazione(p,i)}
     result = {s | ALL (i,s) in R, ALL (i',s') in R i != i' -> i > i'} # è un singleton sempre
+
+specifica della classe Sala
+
+posti(): Intero >= 0
+pre-condizioni: nessuna
+post-condizioni:
+non modifica lo spazio estensionale.
+S = {(s,p) | EXISTS p sal_set(this,s) and posti_{Settore,"Intero >= 0"}(s,p)}
+
+result = \sum_{(s,p) \in S} p
