@@ -1,0 +1,145 @@
+1. Politiche di accesso ai dati: non permettere ad alcun utente di cambiare
+gli id artificiali
+
+2. Trigger V.Occupato_isa_Storico
+
+quando deve scattare: INSERT(new) in Occupato
+
+controllo da effettuare:
+    isError := not exists (
+        select *
+        from nondimesso as nd,ricovero as r
+        where nd.ricovero = r.id and r.storico = new.postoletto
+    )
+
+3. Trigger V.Ricovero_Dimesso_Disjoint_NonDimesso
+
+quando deve scattare: INSERT(_) o UPDATE(_) in Nondimesso o Dimesso
+
+controllo da effettuare:
+    isError := exists (
+        select *
+        from nondimesso as n,dimesso as d
+        where n.ricovero = d.ricovero
+    )
+
+4. Trigger V.Ricovero_Dimesso_NonDimesso_Complete1
+
+quando deve scattare: dopo INSERT(new) in Ricovero, DELETE(new che è il ricovero) in Nondimesso o Dimesso 
+
+controllo da effettuare:
+    isError := not exists (
+        select *
+        from dimesso as d
+        where d.ricovero = new.id
+    ) and not exists (
+        select *
+        from nondimesso as n
+        where n.ricovero = new.id
+    )
+
+
+4. V.Persona_Medico_Paziente_Complete
+
+quando deve scattare: INSERT(new) in Persona
+
+controllo da effettuare:
+    isError := not exists (
+        select *
+        from paziente as p
+        where p.persona = new.codiceFiscale
+    ) and not exists (
+        select *
+        from medico as m
+        where m.persona = new.codiceFiscale
+    )
+
+5. V.Prestazione.medico_giusto
+
+quando deve scattare: INSERT(new) o UPDATE(new) in Prestazione
+
+controllo da effettuare:
+    if new.medico = null then return false;
+    isError := not exists (
+        select *
+        from medico as m
+        where m.persona = new.medico and (m.specializzazioneprimaria = new.specializzazionerichiesta or exists(
+            select *
+            from specializzazionesecondaria as ss
+            where ss.medico = m.persona and ss.specializzazione = new.specializzazionerichiesta
+        ) )
+    )
+
+6. V.Medico.secondaria_non_primaria
+
+quando deve scattare: INSERT(new) o UPDATE(new) in Medico
+
+controllo da effettuare:
+    isError := exists (
+        select *
+        from specializzazionesecondaria as ss
+        where ss.specializzazione = new.specializzazioneprimaria and ss.medico = new.persona
+    )
+
+7. V.Dimesso.date_consistente
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) in Dimesso
+
+controllo da effettuare:
+    isError := not exists(
+        select *
+        from ricovero as r
+        where r.id = new.ricovero and new.dataFine >= r.dataInizio
+    )
+
+8. V.Ricovero.date_consistente
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) in Ricovero
+
+controllo da effettuare:
+    isError := not exists (
+        select *
+        from paziente as paz, persona as p
+        where new.paziente = paz.persona and paz.persona = p.codiceFiscale and new.dataInizio >= p.dataN
+    )
+
+9. V.Prestazione.date_consistente
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) in Prestazione
+
+controllo da effettuare:
+    isError := not exists (
+        select *
+        from paziente as paz, persona as p
+        where new.paziente = paz.persona and paz.persona = p.codiceFiscale and new.dataRichiesta >= p.dataN
+    )
+
+10. V.Medico.date_consistente
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) in Ricovero
+
+controllo da effettuare:
+    isError := not exists(
+        select *
+        from medico as m,persona as p
+        where new.medico = m.persona and p.cf = m.persona and p.dataN < new.dataInizio
+    )
+
+11. V.Paziente.ricovero_singolo
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) in Nondimesso
+
+controllo da effettuare:
+    isError :=  exists (
+        select *
+        from nondimesso nd, ricovero as r1, ricovero as r2
+        where nd.ricovero != new.ricovero and new.ricovero = r1.id and nd.ricovero = r2.id and r1.paziente = r2.paziente
+    )
+
+12. V.Paziente.non_ricoverato_da_se_stesso
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) in Ricovero
+
+controllo da effettuare
+
+    isError := new.paziente = new.medico
