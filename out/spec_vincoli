@@ -10,7 +10,7 @@ ALL p,set,sal,e pre_set(p,set) AND sal_set(sal,set) AND ero_pre(e,p) -> ero_sal(
 [V.Erogato.spettacoli_disgiunti]
 ALL e1,e2,s ero_sal(e1,s) AND ero_sal(e2,s) AND e1 != e2 -> (
     ALL i1,i2,f1,f2 inizio(e1,i1) AND inizio(e2,i2) AND fine_{Erogato,DataOra}(e1,f1) AND fine_{Erogato,DataOra}(e2,f2) -> (
-        i1 < f2 OR i2 < f1
+        not ((i1 < i2 and f1 < f2 and i2 < f1) or (i1 < i2 and f2 < f1 ))
     )
 )
 

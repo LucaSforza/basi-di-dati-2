@@ -1,0 +1,61 @@
+1. Politiche di accesso ai dati: non permettere ad alcun utente di cambiare
+gli id artificiali
+
+2. Trigger V.Settore.costo_veramente_ridotto
+
+quando deve scattare: dopo un INSERT(new) oppure UPDATE(new) in Settore
+
+controllo da effettuare:
+    new.costoPosto > new.costoRidotto
+
+3. Trigger V.Prenotazione.prenota_veramente
+
+quando deve scattare: dopo un INSERT(new) oppure UPDATE(new) in Prenotazione
+
+controllo da effettuare:
+    new.numPrenotatiPieni + new.numPrenotatiRidotti > 0
+
+4. Trigger V.Prenotazione.settore_corretto
+
+quando deve scattare: dopo un INSERT(new) oppure UPDATE(new) in Prenotazione
+
+controllo da effettuare:
+    isError := not exists (
+        select e.id
+        from erogato as e,settore as s
+        where e.sala = s.sala and new.settore = s.id and new.erogato = e.id
+    )
+
+5. Trigger V.Erogato.spettacoli_disgiunti
+
+quando deve scattare: dopo un INSERT(_) oppure UPDATE(_) in Erogato
+
+controllo da effettuare:
+    isError := exists(
+        select e1.id,e2.id
+        from erogato as e1,erogato as e2
+        where e1.sala = e2.sala and ((e1.inizio < e2.inizio and fineErogato(e1) < fineErogato(e2) and e2.inizio < fineErogato(e1))
+        or (e1.inizio < e2.inizio and fineErogato(e2) < fineErogato(e1) ))
+    )
+
+6. Trigger V.Prenotazione.posti_sufficienti
+
+quando deve scattare: dopo un INSERT(new) oppure UPDATE(new) in Prenotazione
+
+controllo da effettuare:
+    isError := not exists(
+        select *
+        from settore as s,erogato as e
+        where s.id = new.settore and e.id = new.erogato and posti(s) >= postiOccupati(s,e)
+    )
+
+7. V.Prenotazione.istante_coerente
+
+quando deve scattare: dopo un INSERT(new) oppure UDATE(new) in Prenotazione
+
+controllo da effettuare:
+    isError := exists (
+        select *
+        from erogato as e
+        where e.id = new.erogato and e.inizio <= new.instante
+    )
