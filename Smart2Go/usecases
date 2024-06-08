@@ -1,0 +1,36 @@
+specifica dello usecase UltimoUtenteCheHaGuidatoAuto
+
+ultimoUtente(a: Auto,t: DataOra): Accettato [0..1]
+pre-condizione: nessuno
+
+post-condizione:
+    Sia N = {(acc,i) | EXISTS n aut_nol(a,n) and acc_nol(acc,n) and inizio(n,i) and i <= t}
+
+    Sia M = argmax_{(acc,i) in N}(i) // è un singleton dato che gli istanti di inizio sono tutti diversi
+
+    ALL (acc,i) in M -> result = acc
+        AND
+    NOT EXISTS (acc,i) in M -> result = null
+
+specifica dello usecase StatisticheCategorie
+
+categoriaPreferite(a: Accettato): Categoria [0..*]
+pre-condizione: nessuna
+
+post-condizione:
+    Sia C = {(c,x) | EXISTS n,t,m acc_nol(a,n) and aut_nol(t,n) 
+            and aut_mod(t,m) and cat_mod(c,m) and (
+                Sia N = {n | EXISTS t',m' aut_nol(t',n) and aut_mod(t',m') and cat_mod(c,t') and acc_nol(a,n)}
+                x = |N|
+            )
+            }
+    Sia M = {c | ALL (c',x) in argmax_{(_,x) in C}(x) -> c = c'}
+    result = M
+
+specifica dello usecase StatisticheConvenzioni
+
+societaAvvantaggiate(c: Categoria): Societa [0..*]
+pre-condizione: nessuna
+
+post-condizione:
+    
