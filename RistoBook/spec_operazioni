@@ -1,0 +1,21 @@
+Specifica delle operazioni della classe GiornoPromozione
+
+copertiOccupati(istante: DataOra): Intero >= 0
+pre-condizioni: ALL d giorno(this,d) -> data(istante,d)
+
+post-condizioni:
+    Sia P = { (p,n) | gio_pre(this,p) and (ALL q quando(p,q) -> q <= istante) and nCommensali(p,n) and Accettata(p) and not Annullata(p)}
+
+    result = \sum_{(_,n) \in P} n
+
+Specifica delle operazioni della classe Promozione
+
+promPerDate(i: DataOra, f: DataOra): GiornoPromozione[0..*]
+pre-condizioni: i <= f
+
+post-condizioni:
+    R = {g | gio_pro(g,this) and 
+    (ALL x,y,gi,oi,of DataOra(x) and DataOra(y) and giorno(g,gi) 
+    and inizio(g,oi) and data(x,gi) and ora(x,oi) and data(y,gi) and ora(y,of)-> x >= i and y <= f )}
+
+    result = R

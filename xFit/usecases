@@ -1,0 +1,33 @@
+usecase statistiche
+
+affluenzaClienti(inizio: Ora, fine: Ora): (area: AreaAttivita,minimo: intero >= 0,medio: reale >= 0, massimo: intero >= 0) [0..*]
+pre-condizioni: inizio <= fine
+
+post-condizioni:
+    ALL t DataOra(t) and t <= adesso and ALL g,g1 giorno(t,g) and giorno(adesso,g1) and g >= g1 - 30 -> (
+        Sia S = {(area,a,g2) | "0..29"(g2) and
+            Sia A = {s | EXISTS s,i,d,v StoricoIngressi(s) and entrata(s,i) and data(i,d) and d = g1 - 30 + g2 and sto_var(s,v) and entra_in(area,v)}
+            a = |A|
+        }
+        Sia Min = arg min_{(area,a,g2)} g2
+        Sia Max = arg min_{(area,a,g2)} g2
+        Sia R = {(a,min,medio,max) | ALL (area,a,g2) in S -> a = area and (ALL m in Min -> min = m) and (ALL m in Max -> max = m) and medio = (\sum_{(area,a,g2)} a) /30}
+        result = R
+    )
+
+volteInAreaUltimoMese(this: Cliente,a: AreaAttivita): intero >= 0
+pre-condizione: nessuna
+
+post-condizione: ALL t,g DataOra(t) and data(t,d) and d = oggi - 30 -> (
+    V = {s | EXISTS i,d1 cli_sto(this,s) and entrata(s,i) and data(i,d1) and d1 >= d}
+    result = |V|
+)
+
+contaAffluenzaDatoCliente(c: Cliente): (area: AreaAttivita,n: intero >= 0)
+// in sql ordinare in ordine decrescente per n
+pre-condizioni: nessuna
+
+post-condizione:
+    R = {(a,n) | AreaAttivita(a) and volteInAreaUltimoMese(c,a,n)}
+
+    result = R

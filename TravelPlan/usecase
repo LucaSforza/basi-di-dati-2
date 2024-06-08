@@ -1,0 +1,12 @@
+specifica dello usecase Statistiche
+
+viaggiNazione(naz: Nazione,i: DataOra,f: DataOra): (reg: Regione,n: Intero >= 0)
+pre-condizione: EXISTS r naz_reg(naz,r) and i <= f
+
+post-condizione:
+    R = {(r,n) | 
+        naz_reg(naz,r) and (
+            Sia N = {e | EXISTS v ero_via(e,v) }
+            n =
+        )
+    }

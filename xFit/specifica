@@ -1,0 +1,66 @@
+1. Persona
+    1.1. cognome
+    1.2. nome
+    1.3. data nascita
+    1.4. Personale Amministrativo (vedere 2)
+    1.5. Clienti (vedere 4)
+    1.6.
+
+2. Personale Amministrativo
+    2.1. dipendenti della società
+        2.1.1. tipologia di contratto (vedere 3)
+        2.1.2. insieme dei contratti passati
+        2.1.3. ruolo ricoperto
+    2.2. Istruttori
+        2.2.1. contratto solo a tempo determinato
+        2.2.2. attività sportive che supervisiona (vedere 7)
+
+3. Contratto
+    3.1. tempo indeterminato
+    3.2. tempo determinato
+        3.2.1. data fine
+    3.3. data inizio
+    3.4. livello contrattuale (intero positivo)
+
+4. Cliente
+    4.1. insieme degli abbonamenti che ha sottoscritto per il centro sportivo (vedere 5)
+    4.2. codice
+
+5. Abbonamento
+    5.1. numero mesi (per ottenere i giorni * 30)
+    5.2. insieme di aree che può accedere (vedere 6)
+    5.3. prezzo
+    5.4. valuta
+    5.5. Attivo oppure Scaduto
+
+6. Area
+    6.1. nome
+    6.2. capienza massima
+
+7. Attività Sportive
+    7.1. nome
+    7.2. erogazione
+        7.2.1. area
+        7.2.2. ora inizio
+        7.2.3. ora fine
+
+8. Varco di Acesso
+    8.1. insieme delle aree che consente l'accesso
+    8.2. 
+
+usecases
+
+1. Membro di Segreteria
+    1.1. vendere/rinnovare contratti a clienti 
+    1.2. visualizzare informazioni che li riguardano (i clienti)
+
+2. Management
+    2.1. definire una nuova tipologia di abbonamento
+    2.2. Data una fascia oraria calcolare per ogni area della struttura
+    il numero medio,minimo e massimo di clienti che hanno acceduto l'area A nella fascia oraria nell'ultimo mese
+    2.3. dato un cliente calcolare il numero medio di volte in cui il cliente che ha frequentato ogni area A del centro nell'ultimo mese.
+    Risultato ordinato in base delle aree maggiornemtne frequentate
+
+3. Personale Amministrativo (tutti)
+    3.1. registrare un nuovo abbonamento per un cliente
+    3.2. inserire nuovi dati per un cliente

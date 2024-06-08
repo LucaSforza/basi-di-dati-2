@@ -1,0 +1,39 @@
+1. Utente
+    1.1. nome
+    1.2. cognome
+    1.3. indirizzo email
+    1.4. citta di provenienza
+    1.5. data di iscrizione
+    1.6. può essere organizzatore di un viaggio (vedere 2)
+    1.7. punteggio (per come calcolarlo vedere specifiche)
+
+2. Viaggio
+    2.1. nome
+    2.2. num minimo di partecipanti
+    2.3. num massimo di partecipanti
+    2.4. associato ad un certo numero di attivita (vedere 3)
+
+3. Attivita
+    3.1. tipologia attivita
+    3.2. nome
+    3.3. istante di inizio
+    3.4. durata
+    3.5. prezzo
+    3.6. luogo in cui si tiene
+        3.6.1. indirizzo
+        3.6.2. citta (ragione e nazione)
+    3.7. informazioni testuali
+    3.8. insieme di codici identificativi di biglietti/prenotazioni relativi all'attivita
+    3.9. può essere uno Spostamento
+        3.9.1. tipo mezzo
+        3.9.2. luogo di partenza
+        3.9.3. luogo di arrivo
+    3.10. insiemi di utenti che partecipano all'attivita
+        3.10.1 se nessun utente partecipa all'attivita si assume che tutti vi partecipano
+
+4. AttivitaComposte
+    4.1. nome
+    4.2. raggruppa più attivita semplici
+
+5. Feedback
+    5.1. partecipanti possono dare un Feedback all'organizzatore del viaggio con un voto da 1 a 5

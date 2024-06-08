@@ -1,0 +1,45 @@
+[V.Personale.solo_un_contratto_attivo]
+
+ALL p Personale(p) -> (
+    Sia CIstr = {c | det_ist(c,p) and attivo_{Contratto}(c,true)}
+    Sia CDip  = {c | con_dip(c,p) and attivo_{Contratto}(c,true)}
+    Istruttore(p) -> |CIstr| <= 1
+        AND
+    Dipendente(p) -> |CDip| <= 1
+)
+
+[V.Contratto.niente_overlapping_tra_contratti]
+
+ALL c1,c2,p,i1,i2 con_per(c1,p) and con_per(c2,p) and inizio(c1,i1) and inizio(c2,i2) -> (
+    NOT EXISTS t Data(t) and t >= i1 and t >= i2 and (ALL f1 fine(c1) -> f1 <= t) and (ALL f2 fine(c2) -> f2 <= t)
+)
+
+[V.lezione.inizio_fine_consistente]
+
+ALL a,i,f Lezione(a) and inizio(a,i) and fine(a,f) -> a < i
+
+[V.Lezione.niente_overlapping_tra_lezioni]
+
+ALL a1,a2,l,i1,i2,f1,f2 are_lez(a1,l) and are_lez(a2,l) and inizio(a1,i1) and fine(a1,f1) and inizio(a2,i2) and fine(a2,f2) ->(
+    NOT EXISTS t DataOra(t) and t >= i1 and t >= i2 and t <= f1 and t <= f2
+)
+
+[V.Istruttore.contratto_determinato]
+
+ALL i,c Istruttore(i) and con_per(c,i) -> Determinato(c)
+
+[V.AreaComune.esiste_area_dove_entrano_tutti_gli_abonati]
+EXISTS a,v AreaComune(a) and entra_in(a,v) and (ALL c EXISTS ab abb_cli(ab,c) and scaduto_{Abbonamento,Data}(ab,oggi,false) -> (puoEntrare_{Cliente}(c,true)))
+
+[V.AreaAttivita]
+ALL t,a,n1,n2 AreaAttivita(a) and capienza(a,n1) and numClientiDentro_{AreaAttivita}(a,t,n2) -> n1 >= n2
+
+[V.Varco.entra_da_entra_in_diversi]
+NOT EXISTS v,a entra_da(a,v) and entra_in(a,v)
+
+[V.StoricoIngressi.uscita_consistente]
+ALL s,i,f StoricoIngressi(s) and entrata(s,i) and uscita(s,f) -> i <= f
+
+[V.Indeterminato.data_fine_effettivamente_finita]
+
+ALL i Indeterminato(i) and (EXISTS f fine(i,f)) -> f <= oggi

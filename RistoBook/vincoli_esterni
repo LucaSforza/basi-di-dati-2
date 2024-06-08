@@ -1,0 +1,51 @@
+[V.Annullata.non_può_essere_compltetata_o_non_utilizzata]
+
+ALL p Annullata(p) -> not (Completata(p) or NonUtilizzata(p))
+
+[V.GiornoPromozione.inizio_fine_corretti]
+
+ALL g GiornoPromozione(g) and inizio(g,i) and fine(g,f) -> i <= f
+
+[V.GiornoPromozione.niente_overlapping_per_stessa_promozione]
+
+ALL g1,g2,p,i1,i2,f1,f2,d gio_pro(g1,p) and gio_pro(g2,p) and g1 != g2
+and inizio(g1,i1) and inizio(g2,i2) and fine(g1,f1) and fine(g1,f2) and giorno(g1,d) and giorno(g2,d) -> (
+    NOT EXISTS t t >= i1 and t >= i2 and t <= f1 and t <= f2
+)
+
+[V.Prenotazione.istante_prenotazione_consistente]
+
+ALL p,i,q Prenotazione(p) and quando(p,q) and istantePrenotazione(p,i) -> i < q
+
+[V.ChiusuraPrenotazione.date_consistenti]
+
+ALL c,i,f,is ChiusuraPrenotazione(c) and inizio(c,i) and fine(c,f) and istanteInserimento(c,is) -> i <= f and is <= i
+
+[V.ChiusuraPrenotazione.overlapping_tra_chiusure]
+
+ALL c1,c2,r,i1,i2,f1,f2 chi_ris(c1,r) and chi_ris(c2,r) and c1 != c2 and inizio(c1,i1) 
+and inizio(c2,i2) and fine(c1,f1) and fine(c2,f2) -> (
+    NOT EXISTS t t >= i1 and t >= i2 and t <= f1 and t <= f2
+)
+
+[V.Prenotazione.prenotato_non_quando_chiuso]
+
+ALL p,r,c,ic,ip,i,f pre_ris(p,r) and quando(p,q) and chi_ris(c,p)
+and istanteInserimento(c,ic) and istantePrenotazione(p,ip) and inizio(c,i) and fine(c,f) -> (
+    (i <= q and q <= f) -> ip < ic
+)
+
+[V.Prenotazione.promozione_uguale_ristorante_prenotazione]
+
+ALL g,p,r1,r2,pr gio_pre(g,p) and pre_ris(p,r1) and gio_pro(g,pr) and pro_ris(pr,r2) -> r1 = r2
+
+[V.Prenotazione.prenotato_quando_è_la_promozione]
+
+ALL g,p,q,gio,i,f gio_pre(g,p) and quando(p,q) and giorno(g,gio) and inizio(g,i) and fine(g,f) -> (
+    data(q,gio) and ( ALL o ora(q,o) -> o >= i and o <= f)
+)
+
+[V.GiornoPromozione.coperti_sufficienti]
+
+ALL i,g,d,n DataOra(i) and GiornoPromozione(g) and giorno(g,d) and data(i,d) and copertiOccupati_{GiornoPromozione,DataOra}(g,i,n)
+    and gio_pro(g,pr) and maxCopertiGionalieri(pr,m) -> n <= m

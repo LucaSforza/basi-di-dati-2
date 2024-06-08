@@ -1,0 +1,47 @@
+
+[V.PeriodoNonDisponibile.niente_overlapping]
+    ALL o Ospitante(o) ->
+        ALL p',p'',i1,i2 osp_per(o,p') and osp_per(o,p'') and inizio(p',i1) and inizio(p'',i2)  ->
+            NOT EXISTS t data(t) and t >= i1
+            and (ALL f1 numGiorni(p',f1) -> t <= i1 + f1)
+            and
+            t >= i2
+            and (ALL f2 numGiorni(p'',f2) -> t<= i1 + f2)
+
+[V.Prenotazione.overlapping_quando_non_e_disponibile]
+
+    ALL p,l,s,o,i1,f1 pos_pre(l,p) and pos_sta(l,s) and osp_sta(o,s) and inizio(p,i1) and numGiorni(p,f2) -> (
+        ALL n,i2,f2 osp_per(o,n) and inizio(n,i2) and numGiorni(n,f2) ->
+            NOT EXISTS t data(t) and t >= i1 and t >= i2 and t <= i1 + f1 and t <= i2 + f2
+    )
+
+[V.Prenotazione.niente_overlapping_per_lo_stesso_letto]
+
+    ALL p',p'',l,i1,i2 pos_pre(p',l) and pos_pre(p'',l) and Accettata(p') and Accettata(p'') and p' != p'' and inizio(p',i1) and inizio(p'',i2) -> (
+        NOT EXISTS t data(t) and t >= i1 and t >= t2 and (ALL f1 numGiorni(p',f1) -> t <= i1 + f1) and (ALL f2 numGiorni(p'',f2) -> t <= i2 + f2)
+    )
+
+[V.Utente.diverso_da_ospitante]
+
+ALL u,p,l,s,o Partecipante(p,u) and pos_pre(l,p) and pos_sta(p,s) and osp_sta(o,s) -> p != o
+
+[V.Prenotazione.posti_letto_nella_stessa_casa]
+
+ALL l,p,s,o',o'' pos_pre(l,p) and pos_sta(l,s) and osp_sta(o',s) and osp_sta(o'',s) -> o' = o''
+
+[V.FeedBackVersoOspitante.verso_la_stessa_prenotazione]
+
+ALL p',p'',u FeedBackVersoOspitante(p',u,p'') -> p' = p''
+
+[V.FeedBackVersoOspitante.solo_quando_è_finito_il_soggiorno]
+
+ALL p,u,d,n Partecipante(p,u) and FeedBackVersoOspitante(p,u,p) and inizio(p,i) and numGiorni(p,n) -> i + n <= oggi
+
+[V.FeedBackVersoViaggiatore.solo_quando_è_finito_il_soggiorno]
+
+ALL p,u,o FeedBackVersoViaggiatore(p,u,o) -> ALL i,n inizio(p,i) and numGiorni(p,n) -> i + n <= oggi
+
+[V.Utente.prenotare_solo_quando_ha_fatto_feedback]
+
+NOT EXISTS p,i1,pt,i2,u,d,n p != pt and Partecipante(p,u) and Partecipante(pt,u) and istantePrenotazione(p,i1) and istantePrenotazione(pt,i2)
+    and inizio(pt,d) and numGiorni(pt,n) and d + n <= oggi and (not FeedBackVersoOspitante(pt,u,pt)) and i1 > i2

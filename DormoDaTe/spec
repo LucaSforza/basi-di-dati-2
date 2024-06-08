@@ -1,0 +1,43 @@
+1. Utente
+    1.1. nome OK
+    1.2. cognome OK
+    1.3. sesso OK
+    1.4. data nascita OK
+    1.5. città residenza OK
+    1.6. Utente che offre disponibilità per ospitare altri utenti OK
+        1.6.1. distanza della loro abitazioni nella loro città OK
+        1.6.2. distanza dalla stazione metro/bus/autobus più vicina OK
+        1.6.3. numero mebri della famiglia OK
+            1.6.3.1. numero adulti e bambini
+        1.6.4. numero di persone che possono ospitare contemporaneamente (vedere 2)
+        1.6.5. date o periodi in cui non è possibile ricevere ospiti OK
+
+
+2. Posto Letto
+    2.1. tipologia posto Letto
+    2.2. stanza dove sta il posto letto (vedere 3)
+
+3. Stanza
+    3.1. tipologia
+    3.2. posti letti (vedere 2)
+
+4. Prenotazione
+    4.1. date
+    4.2. persone
+    4.3. scelta dei posti letto
+
+5. Feedback 
+    5.1. ogni viaggiatore deve NECESSARIAMENTE esprimere una valutazione per un ospitante da 0 a 5.
+    5.2. ogni ospitante PUO' esprimere una valutazione sui viaggiatori
+    5.3. Un viaggiatore non può prenotare più alcuna sistemazione
+
+USECASES
+
+1. Viaggiatori devono poter ottenere la lista di tutti gli iscritti in una città desiderata
+    che sono disposti a riceve ospiti in un dato periodo e hanno per le date richieste posti sufficienti
+
+2. Utente ospitante deve poter liberamente accettare l'offerta o rifiutarla e specificare il motivo nel caso
+
+3. Feedback
+
+4. Richiesta di prenotazione (riga 24)

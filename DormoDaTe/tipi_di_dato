@@ -1,0 +1,2 @@
+tipo Sesso = {Uomo,Donna,Altro}
+tipo Valutazione = 0..5

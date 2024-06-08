@@ -1,0 +1,264 @@
+Specifica usecase Iscrizione
+
+iscrizioneComeCliente(nome: Stringa,cognome: Stringa,email: Email): Cliente
+pre-condizione: NOT EXISTS c Cliente(c) and indirizzoEmail(c,email)
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    Nuove ennuple:
+        - Persona(alpha)
+        - Cliente(alpha)
+        - nome(alpha,nome)
+        - cognome(alpha,cognome)
+        - email(alpha,email)
+    result = alpha
+
+iscrizioneComeRistoratore(nome: Striga,cognome: Stringa): UtenteRistoratore
+pre-condizioni: nessuna
+
+post-condizioni:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    Nuove ennuple:
+        - Persona(alpha)
+        - Ristoratore(alpha)
+        - nome(alpha,nome)
+        - cognome(alpha,cognome)
+
+    result = alpha
+
+Specifica dello usecase IscriversiComeCliente
+
+iscrizioneComeClienteDaRistoratore(email: Email): Cliente
+Sia r: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: not Cliente(r) and (not exists c Cliente(c) and email(c,email))
+
+post-condizioni:
+    Modifica dello spazio estensionale:
+    Nuove ennuple:
+        - Cliente(r)
+        - email(r,email)
+    result = r
+
+Specifica dello usecase IscrivereRistorante
+
+iscrizioneRistorante(nome: Stringa,pIva: PartitaIva, indirizzo: Ind,c: Citta,tipCucina: TipologiaCucina): Ristorante
+Sia r: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: NOT EXISTS ris Ristorante(ris) and pIVA(ris,pIva)
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    Nuove ennuple:
+        - Ristorante(alpha)
+        - nome(alpha,nome)
+        - Indirizzo(alpha,indirizzo)
+        - pIVA(alpha,pIva)
+        - cit_ris(c,alpha)
+        - offre(alpha,tipCucina)
+        - ris_ute(alpha,r)
+    result = alpha
+
+Specifica dello usecase GestioneRistorante
+
+aggiungiTipologia(r: Ristorante,tip: TipologiaCucina)
+Sia u: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: ris_ute(u,r) and not (offre(r,tip))
+
+post-condizioni:
+    Modifica dello spazio estensionale:
+    Nuove ennuple:
+        - offre(r,tip)
+
+chiudiPrenotazioni(r: Ristorante,i: DataOra,f: DataOra): ChiusuraPrenotazione
+Sia u: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizioni: i < f and i > adesso and ris_ute(r,u) and (
+    NOT EXISTS c chi_ris(c,r) and (EXISTS t  t >= i and t <= f and (ALL i1 inizio(c,i1) -> t >= i1) and (ALL f1 fine(c,f1) -> t <= f1))
+)
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    Nuove ennuple:
+        - ChiusuraPrenotazione(alpha)
+        - chi_ris(alpha,r)
+        - inizio(alpha,i)
+        - fine(alpha,f)
+        - istanteInserimento(alpha,adesso)
+    result = alpha
+
+apriPrenotazioni(c: ChiusuraPrenotazione)
+pre-condizione: ALL f fine(c,f) -> f > adesso
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Ennuple eliminate:
+        - not ChiusuraPrenotazione(c)
+        - not inizio(c,_)
+        - not fine(c,_)
+        - not istanteInserimento(c,_)
+
+
+Specifica dello usecase GestionePromozioni
+
+creazionePromozione(r: Ristorante,max: Intero > 0,s: Sconto): Promozione
+Sia u: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: ris_ute(r,u)
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    Nuove ennuple:
+        - Promozione(alpha)
+        - pro_ris(alpha,r)
+        - maxCopertiGionalieri(alpha,max)
+        - percentuale(alpha,s)
+    result = alpha
+
+creazioneGiornoPromozione(p: Promozione,g: Data,i: ora, f: ora): GiornoPromozione
+Sia u: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: (EXISTS r pro_ris(p,r) and ris_ute(r,u)) and i <= f and (ALL a DataOra(a) and data(g) and ora(i) -> adesso <= a)
+
+post-condizioni:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    Nuove ennuple:
+        - GiornoPromozione(alpha)
+        - giorno(alpha,g)
+        - inizio(alpha,i)
+        - fine(alpha,f)
+        - gio_pro(alpha,p)
+    result = alpha
+
+Specifica dello usecase GestionePrenotazioni
+
+accettaPrenotazione(p: Pending)
+Sia u: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: EXISTS ris pre_ris(p,ris) and ris_ute(ris,u) and not Annullata(p) 
+and (ALL q quando(p) -> q >= adesso)
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Ennuple modificate:
+        - not Pending(p)
+        - Accettata(p)
+
+rifiutaPrenotazione(p: Pending)
+Sia u: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: EXISTS ris pre_ris(p,ris) and ris_ute(ris,u) and not Annullata(p)
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Ennuple modificate:
+        - not Pending(p)
+        - Rifiutata(p)
+
+completaPrenotazione(p: Accettata)
+Sia u: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: EXISTS ris pre_ris(p,ris) and ris_ute(ris,u) and not Annullata(p) and not NonUtilizzata(p) 
+and (ALL q quando(p) -> q < adesso)
+
+post-condizione:
+    Modifica dello spazio estensionale
+    Nuove ennuple:
+        - NonUtilizzata(p)
+
+nonUtilizzataPrenotazione(p: Accettata)
+Sia u: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: EXISTS ris pre_ris(p,ris) and ris_ute(ris,u) and not Annullata(p) and not NonUtilizzata(p) 
+and (ALL q quando(p) -> q < adesso)
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Nuove ennuple:
+        - NonUtilizzata(p)
+
+Specifica dello usecase IscriversiComeRistoratore
+
+iscrizioneComeRistoratoreDaUtente()
+Sia c: Cliente autenticato dal sistema per eseguire questa operazione
+pre-condizione: not UtenteRistoratore(c)
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Nuove ennuple:
+        - UtenteRistoratore(c)
+
+Specifica dello usecase Prenota
+
+prenotaSenzaPromozione(r: Ristorante,q: DataOra,n: intero > 0): Pending
+Sia c: Cliente autenticato dal sistema per eseguire questa operazione
+pre-condizione: q > adesso 
+and (NOT EXISTS chi DataOra(t) and chi_ris(chi,r) and (ALL i inizio(chi,i) -> q >= i) and (ALL f fine(chi,f) -> q <= f))
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    Nuove ennuple:
+        - Prenotazione(alpha)
+        - quando(alpha,q)
+        - nCommensali(alpha,n)
+        - istantePrenotazione(alpha,adesso)
+        - Pending(alpha)
+        - cli_pre(c,alpha)
+        - pre_ris(alpha,r)
+    result = alpha
+
+prenotaConPromozione(r: Ristorante,q: DataOra,n: intero > 0,g: GiornoPromozione): Pending
+Sia c: Cliente autenticato dal sistema per eseguire questa operazione
+pre-condizione: q > adesso 
+and (EXISTS p gio_pro(g,p) and pro_ris(p,r))
+and (NOT EXISTS chi DataOra(t) and chi_ris(chi,r) and (ALL i inizio(chi,i) -> q >= i) and (ALL f fine(chi,f) -> q <= f))
+and (ALL m,p,max copertiOccupati_{GiornoPromozione,DataOra}(g,adesso,m) and gio_pro(g,p) and maxCopertiGionalieri(p,max) -> m + n <= max)
+
+post-condizioni:
+    Modifica dello spazio estensionale:
+    Nuove ennuple:
+    Nuove ennuple:
+        - Prenotazione(alpha)
+        - quando(alpha,q)
+        - nCommensali(alpha,n)
+        - istantePrenotazione(alpha,adesso)
+        - Pending(alpha)
+        - cli_pre(c,alpha)
+        - pre_ris(alpha,r)
+        - gio_pre(g,alpha)
+    result = alpha
+
+Specifica dello usecase AnnullaPrenotazione
+
+annullaPrenotazione(p: Prenotazione)
+Sia c: Cliente autenticato dal sistema per eseguire questa operazione
+pre-condizione: not (Completata(p) or NonUtilizzata(p)) and cli_pre(c,p)
+
+post-condizione:
+    Modifica dello spazio estensionale:
+    Nuove ennuple:
+        - Annullata(p)
+
+
+Specifica dello usecase Statistiche
+
+medieAffluenzaPerPromozioni(r: Ristorante,i: DataOra, f: DataOra): (p: Promozione, media: reale >= 0) [0..*]
+Sia u: UtenteRistoratore autenticato dal sistema per eseguire questa operazione
+pre-condizione: i <= f and ris_ute(r,u)
+
+post-condizioni:
+    R = {(p,m) | pro_ris(p,r) and (
+        Sia P = {(g,n) | gio_pro(g,p) and copertiOccupati_{GiornoPromozione,DataOra}(g,f,n) and promPerDate_{Promozione,DataOra,DataOra}(p,i,f,g)}
+        |P| = 0 -> (m = 0)
+            AND
+        |P| != 0 -> (m = ((\sum_{(_,n) \in P} n)/|P|))
+    )}
+    result = R
+
+Specifica dello usecase Ricerca
+
+ricerca(x: Citta,C: TipologiaCucina [0..*],s: Sconto,d: Data,coperti: intero > 0): Ristorante [0..*]
+pre-condizioni: nessuna
+
+post-condizioni:
+    R = {r | cit_ris(x,r) and (EXISTS c c in C and offre(r,c)) 
+    and (EXISTS p,g pro_ris(p,r) and gio_pro(g,p) and giorno(g,d) and (ALL s1 percentuale(p,s1) -> s1 >= s) and (ALL n,m maxCopertiGionalieri(p,m) and copertiOccupati(g,adesso,n) -> m >= n+coperti))}
+    result = R

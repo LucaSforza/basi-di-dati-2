@@ -1,0 +1,26 @@
+operazioni della classe Ospitante
+
+totPosti(): intero >= 0
+
+pre-condizioni: nessuna
+
+post-condizioni: 
+
+Sia L = {(l,n) | EXISTS s,t ops_sta(this,s) and pos_sta(l,s) and pos_tip(l,t) and numPosti(t,n)}
+
+|L| = 0 -> result = 0
+    and
+|L| != 0 -> result = \sum_{(l,n) \in L} n
+
+operazioni della classe PostoLetto
+
+occupato(inizio: Data, fine: Data): boolean
+
+pre-condizioni: inizio <= fine
+
+post-condizioni: 
+    P = {p | EXISTS i,n pos_pre(this,p) and inizio(p,i) and numGiorni(p,n) and i >= inizio and fine >= i + n}
+
+    |P| = 0 -> result = false
+        AND
+    |P| != 0 -> result = true

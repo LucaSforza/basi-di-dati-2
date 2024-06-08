@@ -1,0 +1,79 @@
+operazione classe ErogazioneViaggio
+fine(): DataOra
+pre-condizione: EXISTS a,v att_via(a,v) and ero_via(this,v)
+
+post-condizione:
+    Sia F = {i | EXISTS v,a ero_via(this,v) and att_via(a,v) and fine_{AttivitaComposta}(a,i)}
+    Sia M = argmax_{i \in F} i
+
+    ALL m,i in M and inzio(this,i) -> result = m + i // vedere operazione +
+
+operazione classe Utente
+
+punteggio(): Intero >= 0
+pre-condizione: nessuna
+
+post-condizione: 
+Sia F = {(e,u,f) | EXISTS v organizza(this,v) and ero_via(e,v) and Partecipante(e,u) and feedback(e,u,f)}
+
+|F| = 0 -> result = 0
+    AND
+|F| != 0 -> (
+    ALL i i = \sum_{(_,_,f) \in F} i/|F| -> (
+        i <= 3 -> result = 0
+            AND 
+        i > 3  -> (
+            Sia F1 = {(e,u,f) | EXISTS v organizza(this,v) and ero_via(e,v) and Partecipante(e,u) and feedback(e,u,f) and f >= 4}
+            result = \lfloor |F1|/10 \rfloor
+        )
+    )
+)
+
+
+
+operazione della classe Viaggo
+
+budget(v: Valuta): DeltaDataOra
+pre-condizione: nessuna
+
+post-condizione:
+    Sia A = {(a,b) | att_via(a,this) and budget_{AttivitaComposta,Valuta}(a,v,b)}
+    result = \sum_{(_,b) \in A} b
+
+operazioni di classe AttivitaComposta
+
+inizio(): DeltaDataOra
+pre-condizione: EXISTS s att_sem(this,s)
+
+post-condizione:
+    Sia I = {i | EXISTS s att_sem(this,s) and inizio(s,i)}
+    Sia M = argmin_{i \in I} i // M sarà un singleton
+    ALL m in M -> result = m
+
+fine(): DeltaDataOra
+pre-condizione: EXISTS s att_sem(this,s)
+
+post-condizione:
+    Sia I = {i | EXISTS s att_sem(this,s) and inizio(s,i)}
+    Sia M = argmax_{i \in I} i // M sarà un singleton
+    ALL m in M -> result = m
+
+budget(v: Valuta): Denaro
+pre-condizione: nessuna
+
+post-condizione: 
+
+NOT EXISTS s' att_sem(this,s') -> result = 0
+    AND
+EXISTS s' att_sem(this,s') -> (
+    Sia S = {(i,s1) | EXISTS d,v' att_sem(this,s1) and denaro(s1,d) and sem_val(s1,v') and conversione_{Valuta,Valuta,Denaro}(v',v,d,i)}
+    result = \sum_{(i,_) \in S} i
+)
+
+operazione di classe Valuta
+
+conversione(v: Valuta,d: Denaro): Denaro
+pre-condizione: nessuna
+
+post-condizione:
+result = Conversione di 'd' fatta da un sistema esterno per la conversione

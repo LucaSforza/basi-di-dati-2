@@ -1,0 +1,4 @@
+tipo Email = Stringa secondo standard
+tipo Stato = {Completata,NonUtilizzata}
+tipo Sconto = 0 < Reale <= 1
+tipo Ind = (via: Stringa,civico: Stringa Secondo Standard)

@@ -1,0 +1,106 @@
+Specifica delle operazioni di classe Varco
+
+puoEntrare(c: Cliente): boolean
+pre-condizioni: nessuna
+
+post-condizioni:
+
+NOT EXISTS a abb_cli(a,c) and scaduto_{Abbonamento}(a,oggi,false) -> result = false
+    AND
+EXISTS a abb_cli(a,c) and scaduto_{Abbonamento}(a,oggi,false) -> 
+    ALL a abb_cli(a,c) and scaduto_{Abbonamento}(a,oggi,false) -> (
+        ALL area entra_in(area,this) -> (
+            ALL n1,n2 capienza(area,n1) and numClientiDentro_{AreaAttivita,DataOra}(area,adesso,n2) -> (
+                n1 >= n2 + 1  and (EXISTS att,l are_lez(area,l) and att_lez(att,l) and attivitaConcesse{Abbonamento,DataOra,AttivitaSportiva[0..*]}(c,adesso,att)) -> result = true
+                    AND
+                ((n1 < n2 + 1 -> result = false) OR (n1 >= n2 + 1  and (NOT EXISTS att,l are_lez(area,l) and att_lez(att,l) and attivitaConcesse{Abbonamento,DataOra,AttivitaSportiva[0..*]}(c,adesso,att))) -> (
+                        (( NOT EXISTS v varchiRaggiungibili(this,v) and puoEntrare(v,cliente,true)) -> result = false)
+                            AND
+                        ( EXISTS v varchiRaggiungibili(this,v) and puoEntrare(v,cliente,true) and result = true)
+                    )
+                )
+            )
+        )
+    )
+
+varchiRaggiungibili(): Varco [0..*]
+pre-condizioni: nessuna
+post-condizioni:
+
+V = {v | (EXISTS a entra_in(a,this) and entra_da(a,v) and v != this) OR (EXISTS v'  v' in V and varchiRaggiungibili(v',v))}
+
+result = V
+
+Specifiche operazioni classe Contratto
+
+attivo(): boolean
+pre-condizioni: nessuna
+
+post-condizioni:
+
+Indeterminato(this) -> (
+    EXISTS f fine(this,f) -> result = false
+        AND
+    NOT EXISTS f fine(this,f) -> result = true
+)
+    AND
+Determinato(this) and ALL f fine(this,f) -> (
+    f >= oggi -> result = false
+        AND
+    f < oggi -> result = true
+)
+
+Specifica delle operazioni della classe Abbonamento
+
+fine(): Data
+pre-condizioni: nessuna
+post-condizioni:
+
+ALL t,d,n abb_tip(this,t) and durataMesi(t,n) and inizio(this,d)-> (
+    result = n*30+d
+)
+
+scaduto(istante: Data): boolean
+pre-condizioni: istante >= this.inizio
+
+post-condizioni:
+
+ALL f fine_{Abbonamento}(this,f) -> (
+    f > istante -> result = false
+        AND
+    f <= istante -> result = true
+)
+
+attivitaConcesse(istante: DataOra): AttivitaSportiva [0..*]
+pre-condizioni: ALL g giorno(adesso,g) -> scaduto_{Abbonamento,Data}(this,g,false)
+
+post-condizioni:
+    A = {a | EXISTS t,l accede(a,t) and abb_tip(this,t) and att_lez(a,l) and lezioneInCorso(l,istante,true)}
+    result = A
+
+Specifica delle operazioni della classe Lezione
+
+lezioneInCorso(istante: DataOra): boolean
+pre-condizioni: nessuna
+
+post-condizioni:
+
+ALL i,f inizio(this,i) and fine(this,f) -> (
+    istante < i -> result = false
+        AND
+    istante >= i and istante < f -> result = true
+        AND
+    istante > f -> result = false
+)
+
+Specifica delle operazioni della classe AreaAttivita
+
+numClientiDentro(quando: DataOra): intero >= 0
+pre-condizioni: nessuna
+
+post-condizioni:
+    C = {c | EXISTS v,s entra_in(this,v) and sto_var(s,v) and cli_sto(c,s) 
+    and (ALL i entrata(s,i) -> i <= quando) and (ALL e uscita(s,e) -> e > quando)}
+
+    result = |C|
+

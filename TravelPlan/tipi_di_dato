@@ -1,0 +1,23 @@
+tipo Email = stringa secondo standard
+tipo DeltaDataOra = (giorno: intero >= 0,ora: Ora)
+
+operazione <(a: DeltaDataOra,b: DeltaDataOra): boolean
+    pre-condizione: nessuna
+    post-condizione:
+        ALL g1,g2,o1,o2 giorno(a,g1) and giorno(a,g2) and ora(a,o1) and ora(a,o2) -> (
+            g1 < g2 -> result = true
+                AND
+            g1 = g2 -> (
+                o1 < o2 -> result = true
+                    AND
+                o1 >= o2 -> result = false
+            ) 
+                AND
+            g1 > g2 -> result = false
+        )
+
+operazione +(a: DeltaDataOra,b: DataOra): DataOra
+
+tipo Ind = (via: Stringa, civico: Stringa secondo standard)
+tipo Val = Stringa secondo standard ISO 4217
+tipo Denaro = reale >= 0

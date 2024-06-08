@@ -1,0 +1,56 @@
+1. Cliente
+    1.1. nome
+    1.2. cognome
+    1.3. indirizzo e-mail
+    1.4. devono poter prenotare per un ristorante (vedere 3)
+
+2. Ristorante
+    2.1. nome
+    2.2. Partita IVA
+    2.3. indirizzo
+    2.4. città
+    2.5. Insieme di tipologie di cucine offerte
+        2.5.1. nome tipologia
+
+3. Prenotazione
+    3.1. cliente prenotante
+    3.2. ristorante prenotato
+    3.3. giorno, ora
+    3.4. numero di commensali
+    3.5. stato della prenotazione
+        3.5.1. stato pendente (iniziale)
+        3.5.2. stato accettata
+        3.5.3. stato rifiutata
+        3.5.4. stato completata
+        3.5.5. non utilizzata
+
+4. Promozione
+    4.1. sconto (Reale tra 0 e 1)
+    4.2. giorno della promozione
+    4.3. ora inizio
+    4.4. ora fine
+    4.5. numero max di coperti
+    4.6. numero di coperti rimanenti
+
+5. Chiusura Prenotazioni
+    5.1. DataOra inizio
+    5.2. DataOra fine
+
+USECASES
+
+1. Personale Ristoranti
+    1.1. accettare o rifiutare le prenotazioni pending
+    1.2. iscrivere ristorante
+    1.3. inserire promozioni
+    1.4. Chiudere prenotazioni
+    1.5. riaprire prenotazioni
+
+2. Cliente
+    2.1. iscriversi
+    2.2. effettuare prenotazioni e con sconti se può farlo
+    2.3. annullare la prenotazione
+
+3. Responsabile Statistica ristorante
+    3.1. calcolare dato un periodo di tempo calcolare per ogni promozione
+    del ristorante considerato il numero medio di clienti al giorno
+    3.2. leggere specifica

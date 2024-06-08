@@ -1,0 +1,183 @@
+Specifica dello usecase RichiestaPrenotazione
+
+prenota(o: Ospitante, accompagnatori: Utente [0..*],posti: PostoLetto [0..*],inizio: data,numGiorni: intero > 0): Prenotazione
+Sia u: Utente che sta eseguendo questo usecase e si sia autenticato nel sistema
+pre-condizioni: 
+    sum_{(_,t) in {(pl,t) | EXISTS tip pl in posti and pos_tip(pl,tip) and numPosti(tip,t)}} t >= |accompagnatori| + 1 // + 1 perché cè da considerarsi anche l'utente che ha prenotato
+        AND
+    ALL p in posti -> occupato_{PostoLetto,Data,Data}(p,inizio,inizio + numGiorni,false)
+        AND
+    ALL p in posti -> EXISTS s pos_sta(p,s) and osp_sta(o,s)
+        AND
+    ALL p,i,n Partecipante(p,u) and Accettata(p) and inizio(p,i) and numGiorni(p,n) and oggi >= i + n -> FeedBackVersoOspitante(p,u,p)
+        AND
+    ALL u' in accompagnatori -> ALL p,i,n Partecipante(p,u') and Accettata(p) and inizio(p,i) and numGiorni(p,n) and oggi >= i + n -> FeedBackVersoOspitante(p,u',p)
+post-condizioni:
+    Questa operazione modifica lo spazio estensionale
+    Elementi del dominio di interpretazione: alpha
+    Nuove ennuple:
+        - Prenotazione(alpha)
+        - inizio(alpha,inizio)
+        - numGiorni(alpha,numGiorni)
+        - istantePrenotazione(alpha,adesso)
+        - Partecipante(alpha,u)
+        - ALL u' in accompagnatori Partecipante(alpha,u')
+        - Principale(alpha,u)
+        - ALL u' in accompagnatori Accompagnatore(alpha,u')
+        - ALL p in posti pos_pre(p,alpha)
+    result = alpha
+
+
+Specifica dello usecase ListaAbitazioni
+
+listaAbitazioni(c: Città,inizio: Data, numGiorni: intero > 0, posti: intero > 0): Ospitante [0..*]
+    pre-condizioni: nessuna
+    post-condizioni:
+        Sia O = {o |
+            Ospitante(o) and residenza(c,o) and
+            (ALL nd,i,n osp_per(o,nd) and inizio(nd,i) and numGiorni(nd,n) -> NOT EXISTS t data(t) and t >= inizio and t <= inizio + numGiorni and t >= i and t <= i + n)
+            and
+            Sia L = {l | EXISTS s osp_sta(o,s) and pos_sta(l,s) and occupato_{PostoLetto,Data,Data,boolean}(l,inizio,inizio+numGiorni,false)}
+            |L| >= posti
+        }
+        result = O
+
+
+Specifica dello usecase feedbBackVersoOspitante
+
+feedbBackVersoOspitante(p: Prenotazione,val: Valutazione)
+Sia u: Utente autenticato che sta eseguendo questo usecase
+pre-condizioni:
+    NOT FeedBackVersoOspitante(p,u,p)
+        AND
+    Partecipante(p,u)
+        AND
+    ALL i,n inizio(p,i) and numGiorni(p,n) -> i + n <= oggi
+post-condizioni
+    Modifica del livello estenzionale dei dati:
+    nuove ennuple:
+        - FeedBackVersoOspitante(p,u,p)
+        - val(p,u,p,val)
+
+Specifica dello usecase feedBackVersoViaggiatore
+
+feedBackVersoViaggiatore(p: Prenotazione,u: Utente, val: Valutazione)
+Sia o: Ospitante autenticato dal sistema per poter eseguire questo usecase
+pre-condizioni:
+    Partecipante(p,u) and EXISTS l,s pos_pre(l,p) and pos_sta(l,s) and osp_sta(o,s)
+        AND
+    NOT FeedBackVersoViaggiatore(p,u,o)
+
+post-condizioni:
+    Modifica dello spazio estensionale:
+    nuove ennuple:
+        - FeedBackVersoViaggiatore(p,u,o)
+        - val(p,u,o,val)
+
+Specifica dello usecase AccettazionePrenotazione
+
+accettaPrenotazione(p: Prenotazione): Accettata
+Sia o: Ospitante autenticato dal sistema per poter eseguire lo usecase
+pre-condizioni:
+    EXISTS l,s pos_pre(l,p) and pos_sta(l,s) and osp_sta(o,s) and (not Accettata(p) and not Rifiutata(p)) and (ALL i inizio(p,i) -> i > oggi)
+
+post-condizioni:
+    Modifica dello spazio estensionale:
+    nuove ennuple:
+        - Accettata(p)
+    result = p
+
+rifiutaPrenotazione(p: Prenotazione,motivazione: Stringa): Rifiutata
+Sia o: Ospitante autenticato dal sistema per poter eseguire lo usecase
+pre-condizioni:
+    EXISTS l,s pos_pre(l,p) and pos_sta(l,s) and osp_sta(o,s) and (not Accettata(p) and not Rifiutata(p))
+
+post-condizioni:
+    Modifica dello spazio estensionale:
+    nuove ennuple:
+        - Rifiutata(p)
+        - motivazione(p,motivazione)
+    result = p
+
+Specifica dello usecase AggiungiIndisponibilità
+
+aggiungiIndisponibilità(inizio: Data, numGiorni: intero >= 0): PeriodoNonDisponibile
+Sia o: Ospitante autenticato dal sistema per poter eseguire lo usecase
+pre-condizioni:
+    ALL p,i,n osp_per(o,p) and inizio(p,i) and numGiorni(p,n) -> NOT EXISTS t data(t) and t >= inizio and t >= i and t <= i + n and t <= inizio + numGiorni
+posst-condizioni:
+    Modifica dello spazio estensionale dei dati:
+    Elementi del dominio di interpretazione: alpha
+    nuove ennuple:
+        - PeriodoNonDisponibile(alpha)
+        - inizio(alpha,inizio)
+        - numGiorni(alpha,numGiorni)
+        - osp_per(o,alpha)
+    result = alpha
+
+Specifica dello usecase AggiungiLetti
+
+aggiungiStanza(t: TipologiaStanza): Stanza
+Sia o: Ospitante autenticato dal sistema per poter eseguire lo usecase
+pre-condizioni: nessuna
+post-condizioni:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    nuove ennuple:
+        - Stanza(alpha)
+        - sta_tip(alpha,t)
+        - osp_sta(o,s)
+    result = alpha
+
+aggiungiLetto(s: Stanza,t: TipologiaLetto): PostoLetto
+Sia o: Ospitante autenticato dal sistema per poter eseguire lo usecase
+pre-condizioni: osp_sta(o,s)
+post-condizioni:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    nuove ennuple:
+        - PostoLetto(alpha)
+        - pos_sta(alpha,s)
+        - pos_tip(alpha,t)
+    result = alpha
+
+Specifica dello usecase Registrazione
+
+registrazione(c: Città,nome: Stringa,cognome: Stringa,sesso: Sesso,dataN: Data): Utente
+pre-condizione: nessuna
+post-condizione:
+    Modifica dello spazio estensionale:
+    Elementi del dominio di interpretazione: alpha
+    Nuove ennuple:
+        - Utente(alpha)
+        - nome(alpha,nome)
+        - cognome(alpha,cognome)
+        - sesso(alpha,sesso)
+        - dataN(alpha,dataN)
+        - residenza(c,alpha)
+    result = alpha
+
+Specifica dello usecase DiventaOspitante
+
+aggiungiMezzo(mezzo: Mezzo,distanzaKM: reale > 0)
+    Sia o: Ospitante autenticato dal sistema per poter eseguire questo usecase
+    pre-condizioni: not Distanza(mezzo,o)
+    post-condizioni:
+        Modifica dello spazio estensionale dei dati:
+        nuove ennuple:
+            - Distanza(mezzo,o)
+            - distanzaKM(mezzo,o,distanzaKM)
+
+diventaOspitante(distanzaKMCentro: reale > 0,nAdulti: intero > 0,nBambini: intero >= 0,mezzo: Mezzo ,distanzaMezzo: reale > 0): Ospitante
+Sia u: utente autenticato dal sistema
+pre-condizione: not Ospitante(u)
+post-condizione:
+    Modifica dello spazio estensionale:
+    Nuove ennuple:
+        - Ospitante(u)
+        - distanzaKMCentro(u,distanzaKMCentro)
+        - nAdulti(u,nAdulti)
+        - nBambini(u,nBambini)
+        - Distanza(mezzo,u)
+        - distanzaKM(mezzo,u,distanzaMezzo)
+    result = u

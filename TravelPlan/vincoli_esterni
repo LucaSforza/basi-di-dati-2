@@ -1,0 +1,57 @@
+//TODO: modificare i vincoli
+
+[V.Viaggio.min_max_consistenti]
+
+ALL v,min,max Viaggio(v) and minPartecipanti(v,min) and maxPartecipanti(v,max) -> min <= max
+
+[V.Partecipante.non_troppi]
+ALL e,v,m ero_via(e,v) and maxPartecipanti(v,m) -> (
+    Sia P = {u | Partecipante(e,u)}
+    m >= |P|
+)
+[V.Utente.organizzatore_partecipa_al_viaggio]
+
+ALL u,v,e organizza(u,v) and ero_via(e,v) -> Partecipante(e,u)
+
+[V.Attivita.partecipanti_dello_stesso_viaggio]
+
+ALL Partecipante(e,u) and att_via(a,v1) and ero_via(e,v2) and partecipa(e,u,a) -> v1 = v2
+
+[V.Attivita.composte_e_semplici_stesso_viaggio]
+
+ALL c,s contiene(c,s) and att_via(c,v1) and att_via(s,v2) -> v1 = v2
+
+[V.Attivita.esiste_attivita_iniziale]
+
+ALL v Viaggio(v) and (EXISTS a1 att_via(a1,v)) -> (EXISTS a att_via(a,v) and giorno(a,0))
+
+[V.Attivita.inizio_fine_consistente]
+
+ALL a,d1,d2 Attivita(a) and inizio(a,d1) and fine(a,d2) -> d1 < d2
+
+[V.Composta.niente_overlapping_tra_composti]
+//TODO:
+
+[V.Attivita.niente_overlapping_tra_attivita]
+ALL e,u,a1,a2,i1,i2,f1,f2 Partecipante(e,u) and (partecipa(e,u,a1) or (NOT EXISTS u' partecipa(e,u',a1))) and (partecipa(e,u,a2) or (NOT EXISTS u' partecipa(e,u',a2))) and a1 != a2
+and not Pernottamento(a1) and not Pernottamento(a2) and not Composto(a2) and inizio(a1,i1) and fine(a1,f1)
+and inizio(a2,i2) and fine(a2,f2) -> NOT EXISTS t t >= i1 and t >= i2 and t <= f1 and t <= f2
+
+[V.Pernottamento.niente_overlapping_tra_pernottamenti]
+ALL e,u,a1,a2,i1,i2,f1,f2 Partecipante(e,u) and (partecipa(e,u,a1) or (NOT EXISTS u' partecipa(e,u',a1))) and (partecipa(e,u,a2) or (NOT EXISTS u' partecipa(e,u',a2))) and a1 != a2
+and Pernottamento(a1) and Pernottamento(a2) and inizio(a1,i1) and fine(a1,f1)
+and inizio(a2,i2) and fine(a2,f2) -> NOT EXISTS t t >= i1 and t >= i2 and t <= f1 and t <= f2
+
+[V.Partecipante.feedback_consistente]
+ALL e,v,u Partecipante(e,u) and ero_via(e,v) and organizza(u,v) -> NOT EXISTS x feedback(e,u,x)
+    AND
+ALL e,v,u feedback(e,u,v) -> ALL f fine_{Erogato}(e,f) -> adesso >= f
+
+[V.Utente.iscrizione_consistente]
+
+ALL e,u,i1,i2 Partecipante(e,u) and inizio(e,i1) and istanteIscrizione(u,i2) -> i1 > i2
+
+[V.Partecipante.un_pernottamento_al_giorno] // importante
+ALL e,u,a1,i1,g1 Partecipante(e,u) and partecipa(e,u,a1) and Pernottamento(a1) and inizio(a1,i1) and giorno(i1,g1) -> 
+    NOT EXISTS a2,i2 partecipa(e,u,a2) and inizio(a2,i2) and giorno(i2,g1)
+
