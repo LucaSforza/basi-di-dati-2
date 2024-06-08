@@ -1,0 +1,12 @@
+[V.Auto.non_utilizzata_due_volte_stesso_momento]
+
+ALL a,n,i aut_nol(a,n) and inizio(n,i) -> (
+    not FineNoleggio(n) -> (
+        NOT EXISTS n' n != n' and aut_nol(a,n') and ((ALL i' inizio(n',i') -> i' >= i) or (not FineNoleggio(n')) or (ALL f' fine_{FineNoleggio}(n',f') -> f' > i))
+    )
+        AND
+    FineNoleggio(n) and ALL f fine_{FineNoleggio}(n,f) -> NOT EXISTS n' aut_nol(a,n') and (
+        EXISTS t t >= i and t <= f and (ALL i' inizio(n',i') -> t >= i') and (ALL f' fine_{FineNoleggio}(n',f') -> t <= f')
+    )
+)
+

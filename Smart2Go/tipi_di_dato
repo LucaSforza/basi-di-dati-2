@@ -1,0 +1,8 @@
+tipo CodiceFiscale = stringa di 16 caratteri secondo standard
+tipo CodicePatente = stringa secondo standard
+tipo CodiceCard = stringa secondo standard
+tipo Indirizzo = (via: Stringa, Civico: Stringa secondo standard)
+tipo IBAN = stringa secondo standard
+tipo TargaAuto = stringa secondo standard
+tipo Denaro = reale >= 0
+tipo Posizione = (latidudine: reale,longitudine: reale)
