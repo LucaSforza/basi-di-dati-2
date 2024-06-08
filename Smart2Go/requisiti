@@ -1,0 +1,73 @@
+1. Socio
+    1.1. codice fiscale
+    1.2. nome
+    1.3. cognome
+    1.4. dataN
+    1.5. patente
+    1.6. Stato Pending,Rifiutato,Accettato
+        1.6.1. nel caso accettato il socio avrà una smartCart
+    1.7. Modalita di iscrizione
+        1.7.1. Da Privato
+            1.7.1.1. indirizzo di residenza
+            1.7.1.2. numero carta di credito
+        1.7.2. Dipendente da Società
+            1.7.2.1. Società per la quale lavorano (vedere 2)
+    1.8. Può nolleggiare un Auto Parcheggiata (vedere 3) 
+        1.8.1. una volta autenticati dentro all'auto con la propria
+        smart cart allora parte il meccanismo di tariffazione
+        che consiste nell'addebbitare una quota fissa per ogni minuto
+    1.9. Cliente Abituale
+        1.9.1. se ha effettuato nolleggi per 60 ore negli ultimi mesi nel caso sia privato
+        1.9.2. se ha effettivamente nolleggi per 100 ore negli ultimi mesi nel caso sia per conto di una società
+    1.10. Danno visibile al veicolo quando nolleggia
+
+2. Società
+    2.1. nome
+    2.2. ragione sociale
+    2.3. indirizzo sede legale
+    2.4. cordinate bancare (IBAN) per l'addebito dei soci di questa società
+    2.5. responsabile del servizio smart2go della società
+        2.5.1. una volta che il socio si pre-registra e si dichiara della società 's'
+        allora smart2go invia al responsabile della società 's' se lui fa effettivamente parte
+        della società, se essa viene accettata allora il nuovo socio può ritirare la smartcart
+
+3. Auto
+    3.1. Utilizzata
+    3.2. Parcheggiata
+        3.2.1. latidudine
+        3.2.2. longitudine
+    3.3. Per vedere meglio la tariffazione vedere da riga 27
+    3.4. targa
+    3.5. modello
+        3.5.1. nome
+        3.5.2. numero di posti
+        3.5.3. categoria
+            3.5.3.1. nome
+            3.5.3.2. tariffa al minuto
+        3.5.4. AlimentazioneTradizionale
+            3.5.4.1. numero di km al litro
+        3.5.5. Ecocompatibile 
+            3.5.5.1. tipo di alimentazione
+            3.5.5.2. autonimia in km
+    
+4. Convensione
+    4.1. nome 
+    4.2. tasso di sconto applicato
+    4.3. Incentivo di tipo:
+        4.3.1. Auto Ecocompatibili
+        4.3.2. Auto per alcune categorie
+            4.3.2.1. categoria (almeno 1)
+
+5. Sinistro
+    5.1. descrizione
+    5.2. data e ora
+    5.3. luogo dove è avvenuto
+    5.4. se ha provocato feriti
+    5.5. ammontare economico dei danni
+    5.6. sono di due tipi:
+        5.6.1. quelli con una controparte
+            5.6.1.1. targa veicoli coinvolti
+            5.6.1.2. sapere se il socio è colpevole
+        5.6.2. quelli senza una controparte
+
+USECASES vedere specifica
