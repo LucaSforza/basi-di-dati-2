@@ -6,3 +6,4 @@ tipo IBAN = stringa secondo standard
 tipo TargaAuto = stringa secondo standard
 tipo Denaro = reale >= 0
 tipo Posizione = (latidudine: reale,longitudine: reale)
+tipo ClasseRischio = 0 <= integero <= 10

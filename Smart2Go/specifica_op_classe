@@ -1,0 +1,53 @@
+specifica operazioni della classe Auto
+
+utilizzata(t: DataOra): boolean
+pre-condizione: nessuna
+
+post-condizione:
+    EXISTS n,i aut_nol(this,n) and inizio(n,i) and i <= t and (ALL f fine_{FineNoleggio}(n,f) -> t <= f) -> result = true
+        AND
+    NOT EXISTS n,i aut_nol(this,n) and inizio(n,i) and i <= t and (ALL f fine_{FineNoleggio}(n,f) -> t <= f) -> result = false
+
+specifica operazioni della classe FineNoleggio
+
+fine(): DataOra
+pre-condizione: nessuna
+
+post-condizione:
+    ALL m,i durataMinuti(this,m) and inizio(this,i) -> result = i + m
+
+specifica della classe accettato
+
+abituale(): boolean
+pre-condizione: nessuna
+
+post-condizione:
+    Sia O = {(n,m) | acc_nol(this,n) and durataMinuti(n,m) and FineNoleggio(n) 
+    and (ALL x,annoOggi,meseOggi,giornoOggi,oraOggi,dataOggi ora(adesso,oraOggi) 
+    and data(adesso,dataOggi) and anno(dataOggi,annoOggi) and mese(dataOggi,meseOggi) and giorno(dataOggi,giornoOggi) and DataOra(x) 
+    and data(x,d) and anno(d,annoOggi - 1) and mese(d,meseOggi) 
+    and giorno(d,giornoOggi) and ora(x,oraOggi) and inizio(n,i) -> i >= x)}
+
+    ALL ore ore = (\sum_{(n,m) in O} m)/60 ->(
+        Dipendente(this) -> (
+            ore >= 60 -> result = true
+                AND
+            ore < 60 -> result = false
+        )
+            AND
+        Privato(this) -> (
+            ore >= 100 -> result = true
+                AND
+            ore < 100 -> result = false
+        )
+    )
+
+rischio(): ClasseRischio
+pre-condizione: nessuna
+
+post-condizione: 
+    Sia O = {s | EXISTS n acc_nol(this,n) and nol_sin(n,s) and ((not ConControparte(s)) or socioColpevole(s,true))}
+
+    |O| <= 10 -> result = |O|
+        AND
+    |O| > 10 -> result = 10
