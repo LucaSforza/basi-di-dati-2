@@ -25,3 +25,11 @@ ALL a,n,i acc_nol(a,n) and inizio(n,i) -> (
 [V.Accettato.data_nascita_consistente]
 
 ALL a,d Accettato(a) and dataN(a,d) and ALL n,i,d' acc_nol(a,n) and inizio(n,i) and data(i,d') -> d < d'
+
+[V.Dipendente.se_accettato_allora_confermato]
+
+ALL d Dipendente(d) and Accettato(d) -> confermato(d,true)
+
+[V.VeicoloCoinvolto.diverso_da_auto_socio_del_sinistro]
+
+ALL v,t,a,n,t',c VeicoloCoinvolto(v) and targa(v,t) and con_vei(c,v) and nol_sin(n,c) and aut_nol(a,n) and targa(a,t') -> t != t' 
