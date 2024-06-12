@@ -33,3 +33,11 @@ ALL d Dipendente(d) and Accettato(d) -> confermato(d,true)
 [V.VeicoloCoinvolto.diverso_da_auto_socio_del_sinistro]
 
 ALL v,t,a,n,t',c VeicoloCoinvolto(v) and targa(v,t) and con_vei(c,v) and nol_sin(n,c) and aut_nol(a,n) and targa(a,t') -> t != t' 
+
+[V.Societa.solo_una_convenzione_per_categoria]
+
+ALL c,s con_soc(c,s) -> (
+    PerEcocompatibili(c) -> NOT EXISTS c' c' != c and ((PerEcocompatibili(c') and con_soc(c',s)) or (EXISTS cat,m cat_per(cat,c') and cat_mod(cat,m) and Ecocompatibile(m)))
+        AND
+    PerCategorie(c) and ALL cat cat_per(cat,c) -> NOT EXISTS c' c' != c and PerCategorie(c') and cat_per(cat,c')
+)
