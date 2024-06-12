@@ -33,4 +33,10 @@ societaAvvantaggiate(c: Categoria): Societa [0..*]
 pre-condizione: nessuna
 
 post-condizione:
-    
+    Sia S = {(s,i) | EXISTS p cat_per(c,p) and con_soc(p,s) and percentuale(p,i)}
+
+    Sia M = argmax_{(s,i) in S} i
+
+    Sia R = {s | EXISTS (s',i) in S and s' = s}
+
+    result = R
