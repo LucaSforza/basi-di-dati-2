@@ -40,3 +40,13 @@ post-condizione:
     Sia R = {s | EXISTS (s',i) in S and s' = s}
 
     result = R
+
+specifica dello usecase GestioneFatturazione
+
+fattura(i: DataOra,f: DataOra): Denaro
+pre-condizione: i <= f
+
+post-condizione:
+    Sia M = {(n,i) | FineNoleggio(n) and costo(n,adesso,i) and (ALL f' fine(n,f') -> f' >= i and f' <= f and f <= adesso)}
+
+    result = \sum_{(n,i) in M} i

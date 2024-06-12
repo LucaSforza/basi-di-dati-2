@@ -16,6 +16,40 @@ pre-condizione: nessuna
 post-condizione:
     ALL m,i durataMinuti(this,m) and inizio(this,i) -> result = i + m
 
+consto(t: DataOra): Denaro
+pre-condizione: ALL f fine(this,f) -> f <= t
+
+post-condizione:
+    ALL a, acc_nol(a,this) and m aut_mod(a,m) and ALL cat,t cat_mod(cat,m) and tariffaMinuto(cat,t)-> (
+        ALL classe,scontoClasse rischio(a,t,classe) -> (
+            classe <= 2  -> scontoClasse = 0.1
+                AND
+            classe > 2 and classe < 5 -> scontoClasse = 0
+                AND
+            classe >= 5 -> scontoClasse = classe/-10
+                AND
+            ALL scontoAbituale Sconto(scontoAbituale) -> (
+                abituale(this,true) -> scontoAbituale = 0.25
+                    AND
+                abituale(this,false) -> scontoAbituale = 0
+            )
+                AND
+            ALL scontoConvenzione Sconto(scontoConvenzione) -> (
+                Privato(a) -> scontoConvenzione = 0
+                    AND
+                Dipendente(a) and ALL s lavora(a,s) -> (
+                    EXISTS c convenzione(a,c) -> percentuale(c,scontoConvenzione)
+                        AND
+                    NOT EXISTS c convenzione(a,c) -> scontoConvenzione = 0
+                )
+            )
+                AND
+            ALL d durataMinuti(this,d) -> ALL prezzoConvenzione prezzoConvenzione = t - (t*scontoConvenzione) -> ALL prezzoClasse(
+                prezzoClasse = prezzoConvenzione - (prezzoConvenzione*scontoClasse)
+            ) -> ALL prezzoFinale = prezzoClasse - (prezzoClasse*scontoConvenzione) -> result = prezzoFinale
+        )
+    )
+
 specifica della classe accettato
 
 abituale(): boolean
@@ -42,12 +76,30 @@ post-condizione:
         )
     )
 
-rischio(): ClasseRischio
+rischio(t: DataOra): ClasseRischio
 pre-condizione: nessuna
 
 post-condizione: 
-    Sia O = {s | EXISTS n acc_nol(this,n) and nol_sin(n,s) and ((not ConControparte(s)) or socioColpevole(s,true))}
+    Sia O = {s | EXISTS n acc_nol(this,n) and nol_sin(n,s) and ((not ConControparte(s)) or socioColpevole(s,true)) and (ALL f fine(n,f) -> f <= t)}
 
     |O| <= 10 -> result = |O|
         AND
     |O| > 10 -> result = 10
+
+convenzione(a: Auto): Convenzione [0..1]
+pre-condizione: nessuno
+
+post-condizione:
+    ALL m,c aut_mod(a,m) and cat_mod(c,m) -> (
+        Ecocompatibile(m) -> (
+            EXISTS x PerEcocompatibili(x) and con_soc(x,this) -> result = x
+                AND
+            NOT EXISTS x PerEcocompatibili(x) and con_soc(x,this) -> result = null
+        )
+            AND
+        AlimentazioneTradizionale(m) -> (
+            EXISTS x cat_per(c,x) and con_soc(x,this) -> result = x
+                AND
+            NOT EXISTS x cat_per(c,x) and con_soc(x,this) -> result = null
+        )
+    )
