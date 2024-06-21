@@ -8,6 +8,11 @@ post-condizione:
         AND
     NOT EXISTS n,i aut_nol(this,n) and inizio(n,i) and i <= t and (ALL f fine_{FineNoleggio}(n,f) -> t <= f) -> result = false
 
+durataMinuti(): Denaro
+pre-condizione: nessuna
+post-condizione:
+    ALL m aut_mod(this,m) and ALL c cat_mod(c,m) and ALL t tariffaMinuto(c,t) -> result = t
+
 specifica operazioni della classe FineNoleggio
 
 fine(): DataOra

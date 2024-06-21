@@ -50,3 +50,11 @@ post-condizione:
     Sia M = {(n,i) | FineNoleggio(n) and costo(n,adesso,i) and (ALL f' fine(n,f') -> f' >= i and f' <= f and f <= adesso)}
 
     result = \sum_{(n,i) in M} i
+
+specifica dello usecase StatisticheConvenzioni
+
+societaGreen(S: Societa [0..*]): Societa [0..*]
+pre-condizione: nessuna
+
+post-condizione:
+    result = {s | s in S and EXISTS c con_soc(c,s) and (PerEcocompatibili(c) or (EXISTS cat,m cat_per(c,cat) and cat_mod(cat,m) and Ecocompatibile(m)))}
