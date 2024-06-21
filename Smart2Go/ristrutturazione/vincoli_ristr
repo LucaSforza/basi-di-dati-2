@@ -1,0 +1,31 @@
+// VINCOLI AGGIUNTI
+
+[V.Convenzione.se_per_categorie_allora_associato_a_categoria]
+
+ALL c Categoria(c) -> (tipo(c,"PerCategorie") <=> EXISTS cat cat_per(cat,c))
+
+[V.Modello.complete]
+
+ALL m Modello(m) -> EXISTS x e_isa_m(x,m) or a_isa_m(x,m)
+
+[V.Modello.disjoint]
+
+ALL e,m e_isa_m(e,m) -> NOT EXISTS a a_isa_m(a,m)
+
+[V.Socio.disjoint_pending_rifiutato_accettato]
+//TODO: da migliorare
+NOT EXISTS s,p,r,a (p_isa_s(p,s) and r_isa_s(r,s)) or (p_isa_s(p,s) and a_isa_s(a,s)) or (r_isa_s(r,s) and a_isa_s(a,s))
+
+[V.Socio.complete_pending_rifiutato_accettato]
+
+ALL s Socio(s) -> EXISTS x p_isa_s(x,s) or r_isa_s(x,s) or a_isa_s(x,s)
+
+[V.Socio.complete_privato_dipendente]
+
+ALL s Socio(s) -> EXISTS x pr_isa_s(x,s) or d_isa_s(x,s)
+
+[V.Socio.disjoint_privato_dipendete]
+
+NOT EXISTS s,d,p d_isa_s(d,s) and pr_isa_s(p,s)
+
+// VINCOLI RISTRUTTURATI

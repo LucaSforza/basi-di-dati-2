@@ -1,0 +1,73 @@
+Socio(_cf: CodiceFiscale_,patente: CodicePatente,nome: String, cognome: String, dataN: date)
+    altra chiave: patente
+
+Pending(_socio: CodiceFiscale_)
+    FK: socio references Socio(cf)
+
+Rifiutato(_socio: CodiceFiscale_)
+    FK: socio references Socio(cf)
+
+Accettato(_socio: CodiceFiscale_,smartCard: CodiceCard)
+    FK: socio references Socio(cf)
+    altra chiave: smartCard
+
+Nazione(_nome: String _)
+
+Citta(_id: serial_,nome: String,nazione: String)
+    FK: nazione references Nazione(nome)
+
+Societa(_ragioneSociale: RagSoc_,nome: String, sedeLegale: Indirizzo, cordinateBancarie: IBAN,sede: integer)
+    FK: sede references citta(id)
+
+Dipendente(_socio: CodiceFiscale_,confermato: boolean, societa: RagSoc)
+    FK: societa references Societa(ragioneSociale)
+    FK: socio references Socio(cf)
+
+Privato(_socio: CodiceFiscale_,residenza: Indirizzo, cartaDiCredito: IBAN,citta: integer)
+    FK: citta references Citta(id)
+    FK: socio references Socio(cf)
+
+Categoria(_nome: String _,tariffaMinuto: Denaro)
+
+Modello(_nome: String _,nPosti: IntegerGZ,categoria: String)
+    FK: categoria references Categoria(nome)
+
+TipoAlimentazione(_nome: String _)
+
+Ecocompatibile(_modello: String _,autonomiaKM: RealGZ,tipoAlimentazione: String)
+    FK: modello references Modello(nome)
+    FK: tipoAlimentazione references TipoAlimentazione(nome)
+
+AlimentazioneTradizionale(_modello: String _, kmPerLitro: RealGZ)
+    FK: modello references Modello(nome)
+
+Auto(_targa: TargaAuto_,posParcheggio: Posizione,modello: String)
+    FK: modello references Modello(nome)
+
+Noleggio(_id: serial_,inizio: timestamp,*dannoSegnalato: String,socio: CodiceFiscale,auto: TargaAuto)
+    FK: socio references Accettato(socio)
+    FK: auto references Auto(targa)
+
+FineNoleggio(_noleggio: integer_,durataMinuti: IntegerGZ)
+    FK: noleggio references Noleggio(id)
+
+Sinistro(_noleggio: integer_,descrizione: String, quando: timestamp, luogo: Posizione, provatoFeriti: boolean, valoreDanni: Denaro)
+    FK: noleggio references Noleggio(id)
+
+ConControparte(_sinistro: integer_,socioColpevole: boolean)
+    FK: sinistro references Sinistro(noleggio)
+    v. inclusione: ConControparte(sinistro) occorre in VeicoloCoinvolto(sinistro)
+
+VeicoloCoinvolto(_id: serial_,targa: TargaAuto,sinistro: integer)
+    FK: sinistro references ConControparte(sinistro)
+    altra chiave: (targa,sinistro)
+
+Convenzione(_nome: String _,percentuale: Sconto,tipo: TipConvezione)
+
+con_soc(_convenzione: String,societa: RagSoc_)
+    FK: convenzione references Convenzione(nome)
+    FK: societa references Societa(ragioneSociale)
+
+cat_per(_categoria: String,convenzione: String _)
+    FK: categoria references Categoria(nome)
+    FK: convenzione references Convenzione(nome)

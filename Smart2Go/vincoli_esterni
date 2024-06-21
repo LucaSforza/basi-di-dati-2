@@ -41,3 +41,7 @@ ALL c,s con_soc(c,s) -> (
         AND
     PerCategorie(c) and ALL cat cat_per(cat,c) -> NOT EXISTS c' c' != c and PerCategorie(c') and cat_per(cat,c')
 )
+
+[V.Sinistro.quando_dopo_inizio_e_prima_di_fine]
+
+ALL n,s nol_sin(n,s) and ALL i inizio(n,i) and ALL q quando(s,q) and ALL f fine_{FineNoleggio}(n,f) -> i <= q and (not FineNoleggio(n) or f >= q)
