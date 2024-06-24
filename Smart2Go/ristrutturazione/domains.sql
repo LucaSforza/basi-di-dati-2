@@ -9,6 +9,9 @@ create domain RealGZ as real
 create domain IntegerGZ as integer
     check(value > 0);
 
+create domain IntegerGEZ as integer
+    check(value >= 0);
+
 create domain real_not_null as real
     check(value is not null);
 
