@@ -1,0 +1,42 @@
+TipoDocumento(_nome: String _)
+
+Promotore(_matricola: Matr_,nome: String,cognome: String)
+
+RecapitoTelefonico(_numero: Tel_,cliente: CF)
+    FK: cliente references Cliente(codiceFiscale)
+
+Cliente(_codiceFiscale: CF_,nome: String,cognome: String, *indirizzoEmail: Email, codiceDocumento: String,tipoDocumento: String)
+    FK: tipoDocumento references TipoDocumento(nome)
+    v. inclusione: Cliente(codiceFiscale) occorre in RecapitoTelefonico(cliente)
+    altra chiave: (codiceDocumento,tipoDocumento)
+    altra chiave: email
+
+Gestione(_id: serial_,inizio: timestamp,terminato: boolean, *fine: timestamp, *motivo: String,promotore: Matr, cliente: CF)
+    FK: promotore references Promotore(matricola)
+    FK: cliente references Cliente(codiceFiscale)
+    v. ennupla: not terminato or inizio <= fine
+    v. ennupla: (not terminato or (fine is not null and motivo is not null)) and (not (fine is not null and motivo is not null) or terminato)
+
+Emittente(_nome: String _, tipo: TipoEmittente)
+
+StrumentoFinanziario(_id: serial_,emittente: String)
+    FK: emittente references Emittente(nome)
+
+Rilevazione(_id: serial_,istante: timestamp, valore: Denaro,strumento: integer)
+    v. ennupla: valore >= 0
+    FK: strumento references StrumentoFinanziario(id)
+    altra chiave: (istante,strumento)
+
+Titolo(_strumento: integer_,tipo: TipoTitolo)
+    FK: strumento references StrumentoFinanziario(id)
+
+FondoGestito(_strumento: integer_,numAzioni: IntegerGEZ,numObbligazioni: IntegerGEZ,numTitoliDiStato: IntegerGEZ)
+    FK: strumento references StrumentoFinanziario(id)
+    v. ennupla: (numAzioni+numObbligazioni+numTitoliDiStato) > 0
+
+Investimento(_id: serial_,quantita: RealGZ, istante: timestamp,gestione: integer,strumento: integer)
+    FK: gestione references Gestione(id)
+    FK: strumento references StrumentoFinanziario(id)
+
+Disinvestimento(_id: serial_,quantita: RealGZ, istante: timestamp,investimento: integer)
+    FK: investimento references Investimento(id)

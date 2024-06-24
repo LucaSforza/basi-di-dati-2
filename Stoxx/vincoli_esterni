@@ -1,0 +1,44 @@
+[V.Cliente.non_due_email_uguali]
+
+ALL c,e indirizzoEmail(c,e) and ALL c',e' indirizzoEmail(c',e') and c != c' -> e != e'
+
+[V.GestioneTerminata.date_consistenti]
+
+ALL g,i,f GestioneTerminata(g) and fine(g,f) and inizio(g,i) -> i <= f
+
+[V.Gestione.niente_overlapping]
+
+ALL c,g,g' cli_ges(c,g) and cli_ges(c,g') and g != g' -> 
+    NOT EXISTS t (ALL i inizio(g,i) -> t >= i) and (ALL i' inizio(g',i') -> t >= i')
+        and (ALL f fine(g,f) -> f >= t) and (ALL f' fine(g',f') -> f' >= t)
+
+[V.StrumentoFinanziario.titolo_di_stato_se_solo_se_emesso_da_stato]
+
+ALL e,s emette(e,s) -> (TitoloDiStato(s) <=> Stato(e)) 
+
+[V.FondoGestito.almeno_uno_strumento_finanziario]
+
+ALL f,x,y,z numAzioni(f,x) and numObbligazioni(f,y) and numTitoliDiStato(f,z) -> (x+y+z) > 0
+
+[V.Investimento.istante_coerente_con_la_gestione]
+
+ALL g,i ges_inv(g,i) and ALL i' istante(i,i') and ALL i'' inizio(g,i'') -> i' >= i'' and (ALL f fine(g,f) -> f >= i')
+
+[V.Investimento.investito_solo_se_con_rivelazione]
+
+ALL i,s inv_str(i,s) and ALL i' istante(i,i') -> EXISTS r ril_str(r,s) and (ALL i'' istante(r,i'') -> i'' <= i')
+
+[V.Disinvestimento.quantita_corretta]
+
+ALL i Investimento(i) and ALL q' quantita(i,q') -> (
+    Sia D = {(d,q) | dis_inv(d,i) and quantita(d,q)}
+    (\sum_{(d,q) in D} q) <= q'
+)
+
+[V.Disinvestimento.istante_coerente]
+
+ALL d,i dis_inv(d,i) and ALL i',i'' istante(d,i') and istante(i,i'') -> i' >= i''
+
+[V.Rilevazione.valore_positivo]
+
+ALL r,d Rilevazione(r) and valore(r,d) -> d >= 0

@@ -1,0 +1,12 @@
+1. RegistrazionePromotore
+    1.1. registraPromotore(matricola: Matr,nome: Stringa, cognome: Stringa): Promotore
+2. RegistrazioneCliente
+    2.1. registrazione(codiceFiscale: CF,nome: Stringa,cognome: Stringa,telefoni: Tel [1..*],email: Email [0..1],tipoDoc: TipoDocumento,codDocumento: Stringa): Cliente
+3. GestioneRilevazioni
+    3.1. aggiungiRilevazione(strumento: StrumentoFinanziario,valore: Denaro): Rilevazione
+4. GestioneInvestimenti
+    4.1. investi(g: Gestione,d: Denaro,s: StrumentoFinanziario): Investimento
+    4.2. disivestire(i: Investimento,p: reale > 0): Disivestimento
+5. Statistiche
+    5.1. valorePortafoglio(c: Cliente): Denaro
+    5.2. rischioCliente(c: Cliente): Rischio

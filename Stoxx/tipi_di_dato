@@ -1,0 +1,6 @@
+tipo Matr = stringa secondo standard
+tipo CF = striga di 16 caratteri secondo standard
+tipo Tel = stringa secondo standard
+tipo Email = stringa secondo standard
+tipo Denaro = reale
+tipo Rischio = {Basso, Moderato,Alto,Aggressivo}

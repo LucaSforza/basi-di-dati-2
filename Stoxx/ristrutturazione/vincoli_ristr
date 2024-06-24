@@ -1,0 +1,21 @@
+[V.StrumentoFinanziario.complete]
+
+ALL s StrumentoFinanziario(s) -> EXISTS x f_isa_s(x,s) or t_isa_s(x,s)
+
+[V.StrumentoFinanziario.disjoint]
+
+ALL f,s f_isa_s(f,s) -> NOT EXISTS t t_isa_s(t,s)
+
+[V.Gestione.fine_e_motivo_se_terminato]
+
+ALL g Gestione(g) -> (EXISTS f,m fine(g,f) and motivo(g,m) <=> terminato(g,true))
+
+// da ristrutturare
+
+[V.GestioneTerminata.date_consistenti]
+
+ALL g,i,f terminato(g,true) and fine(g,f) and inizio(g,i) -> i <= f
+
+[V.StrumentoFinanziario.titolo_di_stato_se_solo_se_emesso_da_stato]
+
+ALL e,s emette(e,s) -> (EXISTS t t_isa_s(t,s) and tipo(t,"TitoloDiStato") <=> tipo(e,"Stato"))

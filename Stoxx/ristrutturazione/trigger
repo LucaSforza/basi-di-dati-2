@@ -1,0 +1,111 @@
+1. non è possibile modificare gli id artificali
+
+2.Trigger V.Gestione.niente_overlapping
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Gestione
+
+controllo da effettuare:
+    isError := exists (
+        select *
+        from Gestione g
+        where g.cliente = new.cliente and (new.inizio,coalesce(new.fine,'infinity'::timestamp)) overlaps (g.inizio,coalesce(new.fine,'infinity'::timestamp))
+    );
+
+3.Trigger V.StrumentoFinanziario.titolo_di_stato_se_solo_se_emesso_da_stato
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Titolo
+
+controllo da effettuare:
+    isError := new.tipo = 'TitoloDiStato' and not exists(
+        select *
+        from StrumentoFinanziario s,Emittente e
+        where s.id = new.strumento and s.emittente = e.nome and e.tipo = 'Stato'
+    ) or (new.tipo <> 'TitoloDiStato' and exists(
+        select *
+        from StrumentoFinanziario s,Emittente e
+        where s.id = new.strumento and s.emittente = e.nome and e.tipo = 'Stato'
+    ));
+
+4.Trigger V.StrumentoFinanziario.complete
+
+quando deve scattare: dopo INSERT(new) di StrumentoFinanziario
+
+controllo da effettuare:
+    isError := not exists(
+        select *
+        from FondoGestito f, Titolo t
+        where f.strumento = new.id or t.strumento = new.id
+    )
+
+// TODO: controllare come fare meglio i trigger di disjoin usando gli outer join
+
+5.Trigger V.StrumentoFinanziario.disjoint_lato_fondo
+
+quando deve scattare: dopo INSERT(new) di FondoGestito
+
+controllo da effettuare:
+    isError := exists (
+        select *
+        from Titolo t
+        where t.strumento = new.strumento
+    )
+
+6.Trigger V.StrumentoFinanziario.disjoint_lato_titolo
+
+quando deve scattare: dopo INSERT(new) di Titolo
+
+controllo da effettuare:
+    isError := exists (
+        select *
+        from FondoGestito t
+        where t.strumento = new.strumento
+    )
+
+7.Trigger V.Investimento.istante_coerente_con_la_gestione
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Investimento
+
+controllo da effettuare:
+    isError := exists (
+        select *
+        from Gestione g
+        where g.id = new.gestione and g.inizio > new.istante
+    )
+
+8.Trigger V.Investimento.investito_solo_se_con_rivelazione
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Investimento
+
+controllo da effettuare:
+    isError := not exists (
+        select *
+        from StrumentoFinanziario s,Rilevazione r
+        where s.id = new.strumento and r.strumento = s.id and r.istante <= new.istante
+    )
+
+9.Trigger V.Disinvestimento.quantita_corretta
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Disinvestimento
+
+controllo da effettuare:
+
+isError := (
+    select sum(d.quantita)
+    from Disinvestimento d
+    where d.investimento = new.investimento
+) > (
+    select i.quantita
+    from Investimento i
+    where i.id = new.investimento
+);
+
+10. Trigger V.Disinvestimento.istante_coerente
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Disinvestimento
+
+controllo da effettuare:
+    isError := exists (
+        select *
+        from Investimento i
+        where i.id = new.investimento and i.istante > new.istante
+    );

@@ -1,0 +1,50 @@
+investi(g: Gestione,d: Denaro,s: StrumentoFinanziario): Investimento
+Sia p: Promotore che si è autenticato dal sistema
+pre-condizioni: EXISTS t ges_pro(g,p) and cli_ges(c,g) and (ALL i inizio(g,i) -> t >= i) and (ALL f fine(g,f) -> f >= t)
+
+post-condizioni:
+    modifica dello spazio estensionale
+    elementi del dominio: alpha
+    nuove ennuple:
+        - Investimento(alpha)
+        - ges_inv(g,alpha)
+        - inv_str(alpha,s)
+        - quantita(alpha,d/valore(s,adesso))
+        - istante(alpha,adesso)
+    result = alpha
+
+--
+
+valorePortafoglio(c: Cliente): Denaro
+Sia p: Promotore che si è autenticato dal sistema
+pre-condizioni: EXISTS g,t ges_pro(g,p) and cli_ges(c,g) and not GestioneTerminata(g) and (ALL i inizio(g,i) -> i <= adesso)
+
+post-condizioni:
+    Sia G = {(i,x) | EXISTS g ges_inv(g,i) and cli_ges(c,g) and valore_{Investimento}(i,adesso,x)}
+
+    result = (\sum_{(i,x) in G} x)
+
+rischioCliente(c: Cliente): Rischio
+Sia p: Promotore che si è autenticato dal sistema
+pre-condizioni: EXISTS g,t ges_pro(g,p) and cli_ges(c,g) and not GestioneTerminata(g) and (ALL i inizio(g,i) -> i <= adesso)
+
+post-condizioni:
+    Sia F = {(f,v) | EXISTS i,g inv_str(i,f) and ges_inv(g,i) and cli_ges(c,g) and FondoGestito(f) 
+        and (ALL a,x percentualeAzioni_{FondoGestito}(f,a) and valore_{Investimento,DataOra}(i,adesso,x) -> v = x*a)}
+    Sia A = {(a,v) | EXISTS i,g inv_str(i,f) and ges_inv(g,i) and cli_ges(c,g) and Azione(a) and valore_{Investimento,DataOra}(i,adesso,v)}
+
+    Sia T = {(s,v) | EXISTS i,g inv_str(i,f) and ges_inv(g,i) and cli_ges(c,g) and valore_{Investimento,DataOra}(i,adesso,v)}
+
+    |T| = 0 -> result = "Basso"
+        and
+    |T| != 0 -> (
+        ALL alpha, alpha = [(\sum_{(f,v) in F} v) + (\sum_{(a,v) in A} v)]/(\sum_{(s,v)} v) -> (
+            alpha <= 0.10 -> result = "Basso"
+                and
+            alpha > 0.10 and alpha <= 0.40 -> result = "Moderato"
+                and
+            alpha > 0.40 and alpha <= 0.60 -> result = "Alto"
+                and
+            alpha > 0.60 -> result = "Aggressivo"
+        )
+    )

@@ -1,0 +1,64 @@
+Specifica operazioni classe FondoGestito
+
+percentualeAzioni(): reale >= 0
+pre-condizioni: nessuna
+
+post-condizioni:
+    ALL a,o,t numAzioni(this,a) and numObbligazioni(this,o) and numTitoliDiStato(this,t) -> (
+        result = a/(a+o+t)
+    )
+
+percentualeObbligazioni(): reale >= 0
+pre-condizioni: nessuna
+
+post-condizioni:
+    ALL a,o,t numAzioni(this,a) and numObbligazioni(this,o) and numTitoliDiStato(this,t) -> (
+        result = o/(a+o+t)
+    )
+
+percentualeStato(): reale >= 0
+pre-condizioni: nessuna
+
+post-condizioni:
+    ALL a,o,t numAzioni(this,a) and numObbligazioni(this,o) and numTitoliDiStato(this,t) -> (
+        result = t/(a+o+t)
+    )
+
+Specifica della classe StrumentoFinanziario
+
+valore(t: DataOra): Denaro
+pre-condizioni: EXISTS r ril_str(r,this) and (ALL i istante(r,i) -> i <= t)
+
+post-condizioni:
+    Sia R = {(r,i,v) | ril_str(r,this) and istante(r,i) and valore(r,v) and i <= t}
+
+    Sia R' = arg_max_{(r,i,v) in R} i // NOTA: è un singleton
+
+    ALL (r,i,v) in R' -> result = v
+
+Specifica operazioni classe Investimento
+
+importo(): Denaro
+pre-condizioni: nessuna
+
+post-condizioni:
+    //NOTA: la precondizione di valore è sempre verificata per il vincolo V.Investimento.investito_solo_se_con_rivelazione
+    ALL s inv_str(this,s) and ALL i istante(this,i) 
+    and ALL v valore_{StrumentoFinanziario,DataOra}(s,i,v) and ALL q quantita(this,q) -> result = v*q
+
+valore(t: DataOra): Denaro
+pre-condizioni: ALL i istante(this,i) -> t >= i
+
+post-condizioni:
+    Sia D = {(d,x) | dis_inv(d,this) and quantita(d,x) and (ALL i istante(d,i) -> i <= t)}
+
+    ALL i quantita(this,i) and ALL s inv_str(this,s) and ALL v valore_{StrumentoFinanziario}(s,t,v) -> result = (i - (\sum_{(d,x) in D} x))*v
+
+Specifica operazioni classe Disinvestimento
+
+liquidato(): Denaro
+pre-condizioni: nessuna
+
+post-condizioni:
+    ALL i',s dis_inv(this,i') and inv_str(i',s) and ALL i istante(this,i) 
+    and ALL v valore_{StrumentoFinanziario,DataOra}(s,i,v) and ALL q quantita(this,q) -> result = v*q

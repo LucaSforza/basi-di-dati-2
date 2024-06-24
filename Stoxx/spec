@@ -1,0 +1,31 @@
+1.Promotore agenzia
+    1.1. matricola
+    1.2. nome
+    1.3. cognome
+
+2. Cliente
+    2.1. codice fiscale
+    2.2. nome
+    2.3. cognome
+    2.4. almeno un recapito telefonico
+    2.5. indirizzo email (se disponibile)
+    2.6. estremi di un documento di riconoscimento (tipo e numero)
+    2.7. promotore (vedi 1) che gestisce il suo capitale
+        2.7.1. può cambiare e se cambia bisogna sapere anche il motivo del cambio
+
+3. Strumento finanziario
+    3.1. Tipologia
+        3.1.1. Fondo Gestito
+            3.1.1.1. numero di titoli azionari,obblicazioni e titoli di stato, anche percentuali dei titoli contenuti
+        3.1.2. Titolo azionario
+        3.1.3. titolo obbligazione
+        3.1.4. Titolo di stato
+    3.2. entità che gestisce lo strumento finanziario
+        3.2.1. per i titolo di stato deve essere una nazione
+    
+4. Investimento
+    4.1. Compravendita di una quantità di un certo titolo finanziario
+    4.2. data (me sa anche ora conviene) dell'atto di compravendita
+    4.3. importo investito o liquidato
+
+5. Rilevazione valore di uno strumento finanziario
