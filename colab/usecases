@@ -1,0 +1,29 @@
+10.1. mediaGiornaliera(I: Intervallo [0..*]): reale >= 0
+pre-condizione: ALL i_1,i_2 i_1 in I and i_2 in I and i_1 != i_2 -> (
+    NOT EXISTS t //classico overlapping
+)
+post-condizione:
+    Sia U = {u | EXISTS a utilizza(a,u) and inCorso_{Abbonamento,DataOra}(a,adesso,true) and (
+        EXISTS 
+    )}
+
+10.2. fattura(im: Impresa,i: Data,f: Data): Denaro
+pre-condizione: i <= f
+
+post-condizione:
+    Sia {(u,p) | EXISTS u_1 utentiGestiti(im,i,f,u_1) and ute_uti(u_1,u) and prezzo(u,p)}
+
+    result = \sum_{(u,p)} p
+
+
+10.3. serviziModa(k: intero > 0,i: Data,f: Data): ServizioOfferto [0..k]
+pre-condizione: i <= f
+
+post-condizione:
+    Sia S = {(s,n) | EXISTS u ser_ute(s,u) and (EXISTS t /*overlapping tra inizio di utilizzo e i parametri i e f*/)}
+
+    result = sorted(S,)
+
+10.4. clientiInutili(i: Data,f: Data): Utente [0..*]
+
+

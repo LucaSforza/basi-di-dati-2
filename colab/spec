@@ -1,0 +1,66 @@
+1.Clienti
+    1.1. Stipulano gli abbonamenti
+    1.2. Persona Fisica
+        1.2.1. nome
+        1.2.2. cognome
+        1.2.3. data nascita
+        1.2.4. partita iva [0..1]
+
+    1.3. Impresa
+        1.3.1. ragione sociale
+        1.3.2. partita iva
+
+2.Utenti
+    2.1. nome
+    2.2. cognome
+    2.3. data nascita
+    2.4. indirizzo
+    2.5. indirizzo email
+
+3. Abbonamento
+    3.1. istante inizio
+    3.2. tipologia abbonamento (vedere 4)
+    3.3. utenti che utilizzano questo abbonamento
+
+4. Tipologia abbonamento
+    4.1. prezzo
+    4.2. durata
+    4.3. intervallo di date in cui può essere sottoscritto
+    4.4. numero di utenti che può sottoscrivere questo abbonamento
+    4.5. insieme di servizi offerti (vedere 5)
+        4.5.1. percentuale di sconto sul Servizio
+        4.5.2. soglia mensile di utilizzo gratuito (intero)
+
+5. Servizio offerto
+    5.1. nome
+    5.2. descrizione
+    5.3. prezzo unitario
+    5.4. storico utilizzo da parte degli utenti
+        5.4.1. istante inizio
+        5.4.2. istante fine
+        5.4.3. quantità utilizzata (intero)
+
+6. Storico accessi nell'ufficio
+    6.1. istante di entrata
+    6.2. istante di uscita
+
+7. Postastione di lavoro
+    7.1. associata ad ogni utente abbonato
+    7.2. numero identificativo
+
+USECASES
+
+1. Clienti
+    1.1. poter scegliere una tipologia di abbonamento iscrivere quanti utenti vuole
+
+4. Utente
+    4.1. devono poter effettuare l'accesso alla struttura
+    4.2. registrare l'uscita
+
+2. Gestori dello spazio
+    2.1. creare nuove tariffe
+    2.2. aggiungere servizi
+    2.3. verificare abbonamento di un utente
+
+3. Per le statistiche leggere specifica
+

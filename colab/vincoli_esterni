@@ -1,0 +1,59 @@
+[V.IntervalloDate.niente_overlapping]
+
+ALL d_1,d_2,t int_tip(d_1,t) and int_tip(d_2,t) and ALL i_1 inizio(d_1,i_1) and ALL f_1 fine(d_1,f_1) 
+and ALL i_2 inizio(d_2,i_2) and ALL f_2 fine(d_2,f_2) -> NOT EXISTS t t >= i_1 and t >= i_2 and t <= f_1 and t <= f_2
+
+[V.IntervalloDate.date_coerenti]
+
+ALL i IntervalloDate(i) and ALL i' inizio(i,i') and ALL f fine(i,f) -> i' <= f
+
+[V.Abbonamento.inizio_compreso_in_intervallo_date]
+
+ALL a,tip abb_tip(a,tip) and ALL i inizio(a,i) -> 
+    EXISTS d int_tip(d,tip) and (ALL i' inizio(d,i') -> i >= i') and (ALL f fine(d,f) -> f <= i)
+
+[V.TipologiaAbbonamento.non_superati_maxAbboanti]
+
+ALL t,m maxAbbonati(t,m) and ALL d Data(d) -> (
+    Sia U = {u | EXISTS a abb_tip(a,t) and utilizza(a,u) and (ALL i inizio(a,i) -> i <= d) and (ALL f fine_{Abbonamento}(a,f) -> f >= d)}
+    |U| <= m
+)
+
+[V.Uscita.date_consistenti]
+
+ALL x,e,u accesso(x,e) and uscita(x,u) -> e <= u
+
+[V.Accesso.se_abbonato]
+
+ALL a,u acc_ute(a,u) and ALL e entrata(a,e) and ALL d data(e,d) ->
+    EXISTS a utilizza(a,u) and (ALL i inizio(a,i) -> d >= i) and (ALL f fine_{Abbonamento}(a,f) -> f >= d)
+
+[V.Accesso.niente_overlapping]
+
+ALL a_1,a_2,u acc_ute(a_1,u) and acc_ute(a_2,u) and a_1 != a_2 ->
+    NOT EXISTS t (ALL i_1 inizio(a_1,i_1) -> t >= i_1) and (ALL f_1 fine(a_1,f_1) -> t <= f_1)
+        and (ALL i_2 inizio(a_2,i_2) -> t >= i_2) and (ALL f_2 fine(a_2,f_2) -> t <= f_2)
+
+[V.PostazioneLavoro.overlapping_tra_utilizzatori]
+
+ALL p,a_1,u_1 pos_uti(p,a,u) and ALL a_2,u_2 pos_uti(p,a_2,u_2) and u_1 != u_2 ->
+    NOT EXISTS t (ALL i_1 inizio(a_1,i_1) -> t >= i_1) and (ALL f_1 fine_{Abbonamento}(a_1,f_1) -> t <= f_1)
+        and (ALL i_2 inizio(a_2,i_2) -> t >= i_2) and (ALL f_2 fine_{Abbonamento}(a_2,f_2) -> t <= f_2)
+
+[V.Abbonamento.niente_overlapping_tra_utenti]
+ALL a_1,a_2,u utilizza(a_1,u) and utilizza(a_2,u) and a_1 != a_2 and ALL i_1,i_2 inizio(a_1,i_1) and inizio(a_2,i_2) ->
+    NOT EXISTS t t >= i_1 and t >= i_2 and (ALL f_1 fine_{Abbonamento}(a_1,f_1) -> t <= f_1) and (ALL f_2 fine_{Abbonamento}(a_2,f_2) -> t <= f_2)
+
+[V.Utilizzo.date_coerenti]
+
+ALL u,i,f Utilizzo(u) and inizio(u,i) and fine(u,f) -> i <= f
+
+[V.Utilizzo.niente_overlapping]
+
+ALL ute_uti(u,x) and ute_uti(u,y) and 
+// equivalente a gli altri vincoli di overlapping
+
+[V.Utilizzo.dentro_accesso_utente]
+
+ALL u,x,i_1,f_1 ute_uti(u,x) and inizio(x,i_1) and fine(x,f_1) ->
+    EXISTS a,t acc_ute(a,u) and (ALL i_2 entrata(a,i_2) -> t >= i_2) and (ALL f_2 uscita(a,f_2) -> t <= f_2) and t >= i_1 and t <= f_2

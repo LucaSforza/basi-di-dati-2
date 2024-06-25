@@ -1,0 +1,24 @@
+1. RegistrazioneImpresa
+    1.1. registrazioneImpresa(partitaIVA: pIVA, ragioneSociale: RagSoc): Impresa
+2. RegistrazioneUtente
+    1.2. registrazione(nome: Stringa,cognome: Stringa,dataN: Data, indirizzo: Ind, indEmail: Email): Utente
+3. RegistrazioneClientePrivato
+    3.1. registrazionePrivato(): PersonaFisica
+4. GestioneAccessi
+    4.1. entra(): Accesso
+    4.2. esci(): Uscita
+5. UtilizzoServizio
+    5.1. utilizza(s: ServizioOfferto): Utilizzo
+6. GestioneAbbonamenti
+    6.1. acquistaAbbonamento(t: TipologiaAbbonamento,U: Utente [1..*]): Abbonamento
+7. GestioneTipologieAbbonamenti
+    7.1. creaTipologia(prezzo: Denaro,durataGiorni: intero > 0, maxAbbonati: intero > 0): TipologiaAbbonamento
+    7.2. aggiungiIntervallo(t: TipologiaAbbonamento,inizio: Data,fine: Data): IntervalloDate
+
+...
+
+10. Statistiche
+    10.1. mediaGiornaliera(I: Intervallo [0..*]): reale >= 0
+    10.2. fattura(im: Impresa,i: Data,f: Data): Denaro
+    10.3. serviziModa(k: intero > 0,i: Data,f: Data): ServizioOfferto [0..k]
+    10.4. clientiInutili(i: Data,f: Data): Utente [0..*]

@@ -1,0 +1,43 @@
+Specifica operazioni classe Impresa
+
+utentiGestiti(i: Data,f: Data): Utente[0..*]
+pre-condizione: i <= f
+
+post-condizione:
+    result = {u | EXISTS a comprato(a,this) and utilizza(a,u) and (ALL i' inizio(a,i') -> i' >= i and i' <= f)}
+
+Specifica operazioni classe Utilizzo
+
+prezzo(): Denaro
+pre-condizione: nessuna
+
+post-condizione:
+    ALL inizio(this,i) and ute_uti(u,this) and abb_tip(a,t) and inCorso(a,i,true) and ser_uti(s,this) and prezzoUnitario(s,p) and unitaUtilizzate(this,util) ->
+        EXISTS s' offre(s',t) and s' = s ->
+            not utilizziRimasti(t,s,i,rim) and rim = 0 -> (
+                rim - util >= 0 -> result = 0
+                    and
+                rim - util < 0 -> result = p*(util-rim)
+            )
+                AND
+            utilizziRimasti(t,s,i,0) and ALL sconto(t,s,sco) -> (
+                result = p*util*sco
+            )
+            AND
+        (NOT EXISTS s' offre(s',t) and s' = s) -> result = p*util
+
+Specifica operazioni classe offre
+
+utilizziRimasti(t: DataOra): intero >= 0
+pre-condizione: nessuna
+
+post-condizione:
+    Sia U = {(u,n) | ser_uti(thisServizio,u) and unitaUtilizzate(u,n) 
+    and (ALL i inizio(u,i) and ALL m_1 mese(i,m_1) and mese(t,m_2) and ALL a_1,a_2 anno(t,a_1) 
+    and anno(i,a_2) -> i <= t and m_1 = m_2 and a_1 = a_2)}
+
+    ALL n1 utilizzoPerMese(thisTipologia,thisServizio,n1) and ALL n2 n2 = (\sum_{(u,n) in U} n) - n1 -> (
+        n2 < 0 -> result = 0
+            AND
+        n2 >= 0 -> result = n2
+    )

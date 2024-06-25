@@ -1,0 +1,7 @@
+tipo RagSoc = stringa secondo standard
+tipo pIVA = stringa secondo standard partite iva
+tipo Email = stringa secondo standard
+tipo Ind = (via: Stringa,civico: stringa secondo standard)
+tipo Denaro = reale >= 0
+tipo Percentuale = 0 <= reale <= 1
+tipo Intervallo = (inizio: Ora,fine: Ora)
