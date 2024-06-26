@@ -1,0 +1,7 @@
+Dati questo schema logico e i domini create sopra generare codice SQL per la creazione di questo database.
+Dove vedi le '_' vuol dire che tutti gli attributi tra il primo '_' e secondo ed l'ultimo '_' allora loro saranno chave di quella tabella.
+Le FK: indicano i vincoli di Foreign Key che devi implemetare.
+Le v. ennupla servono per definire dei vincoli nelle tabelle.
+altra chiave serve per definire un altra chiave da implementare con unique.
+Metti not null laddove non vedi asterischi.
+Le chiavi non iniziano con '_', vedere sopra l'utilizzo dei '_'.
