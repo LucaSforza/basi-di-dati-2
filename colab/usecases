@@ -1,11 +1,11 @@
-10.1. mediaGiornaliera(I: Intervallo [0..*]): reale >= 0
+10.1. mediaGiornaliera(I: Intervallo [0..*]): (i: intervallo,reale >= 0) [0..*]
 pre-condizione: ALL i_1,i_2 i_1 in I and i_2 in I and i_1 != i_2 -> (
     NOT EXISTS t //classico overlapping
 )
 post-condizione:
-    Sia U = {u | EXISTS a utilizza(a,u) and inCorso_{Abbonamento,DataOra}(a,adesso,true) and (
-        EXISTS 
-    )}
+    Sia U = {(a,i) | i in I and EXISTS u acc_ute(a,u) and (ALL e entrata(a,e) and ALL i' ora(e,i') -> EXISTS t /*overlapping tra i e i'*/) and EXISTS m mese(adesso,m) and (ALL e entrata(a,e) -> mese(e,m) and anno(e,annoOggi) and e <= adesso) }
+
+    result = {(i,r) | EXISTS d,g data(adesso,d) and giorno(d,g) and r = |{(a,i') | (a,i') in U and i' = i}|/g }
 
 10.2. fattura(im: Impresa,i: Data,f: Data): Denaro
 pre-condizione: i <= f
@@ -22,8 +22,16 @@ pre-condizione: i <= f
 post-condizione:
     Sia S = {(s,n) | EXISTS u ser_ute(s,u) and (EXISTS t /*overlapping tra inizio di utilizzo e i parametri i e f*/)}
 
-    result = sorted(S,)
+    definizione operazione <= per le tuple (s,n):
+        (s,n) <= (s',n') <=> n >= n'
 
-10.4. clientiInutili(i: Data,f: Data): Utente [0..*]
+    result = {s | EXISTS (s',n,i) in sorted(S) and and s = s' and i <= k}
 
+10.4. utentiInutili(i: Data,f: Data): Utente [0..*]
+pre-condizione: i <= f
 
+post-condizione:
+    Sia A_1 = {u | EXISTS a utilizza(a,u) and (EXISTS t (ALL i' inizio(a,i') -> t >= i') and (ALL f' fine_{Abbonamento}(a,f') -> t <= f') and t >= i and t <= f)}
+    Sia A_2 = {u | EXISTS a acc_ute(a,u) and (ALL i' entrata(a,i') -> i <= i' and i' <= f)}
+
+    result = A_1 \ A_2

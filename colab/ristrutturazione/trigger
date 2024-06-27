@@ -1,0 +1,51 @@
+1. impedire la modifica delle chiavi artificiali
+
+2.Trigger V.IntervalloDate.niente_overlapping
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di IntervalloDate
+
+controllo da effettuare
+
+isError := exists (
+    select *
+    from IntervalloDate i
+    where i.tipologia = new.tipologia and (i.inizio,i.fine) overlaps (new.inizio,new.fine)
+)
+
+3.Trigger V.Abbonamento.inizio_compreso_in_intervallo_date
+// equivalente a V.Accesso.niente_overlapping,V.PostazioneLavoro.overlapping_tra_utilizzatori,V.Abbonamento.niente_overlapping_tra_utenti,V.Utilizzo.niente_overlapping
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Abbonamento
+
+controllo da effettuare:
+    isError := not exists (
+        select
+        from IntervalloDate i
+        where i.tipologia = new.tipologia and (i.inizio,i.fine) overlaps (new.inizio,fineAbbonamento(new.id))
+    )
+
+4.Trigger V.TipologiaAbbonamento.non_superati_maxAbboanti
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Abbonamento
+
+controllo da effettuare:
+    isError := exists (
+        select *
+        from TipologiaAbbonamento t,Abbonamento a
+        where t.id = new.tipologia and a.tipologia = t.id
+        group by t.id
+        having count(a.utente) > t.maxAbbonati
+    )
+
+5.Trigger V.Accesso.se_abbonato
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Accesso
+
+controllo da effettuare:
+    isError := not exists(
+        select
+        from Abbonato a,utilizza u
+        where u.utente = new.utente and u.abbonamento = a.id and (a.inizio,fineAbbonamento(a.id)) overlaps (new.inizio,coalesce(new.fine,'infinity'::timestamp))
+    )
+
+6.Trigger V.Utilizzo.dentro_accesso_utente

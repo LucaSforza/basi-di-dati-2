@@ -1,0 +1,53 @@
+Nazione(_nome: String _)
+
+Citta(_id: serial_,nome: String,nazione: String)
+    FK: nazione references Nazione(nome)
+
+Utente(_indEmail: Email_,nome: String,cognome: String, dataN: date, indirizzo: Ind,citta: Integer)
+    FK: citta references Citta(id)
+
+Cliente(_id: serial_)
+
+partitaIVA(_cliente: integer_,val: pIVA)
+    FK: cliente references Cliente(id)
+    altra chiave: (val)
+
+Impresa(_cliente: integer_,ragioneSociale: RagSoc)
+    FK: cliente references partitaIVA(cliente)
+
+PersonaFisica(_utente: Email_,cliente: Integer)
+    FK: utente references Utente(indEmail)
+    FK: cliente references Cliente(id)
+
+TipologiaAbbonamento(_id: serial_,prezzo: Denaro,durataGiorni: IntegerGZ,maxAbbonati: IntegerGZ)
+
+IntervalloDate(_id: serial_,inizio: date,fine: date,tipologia: Integer)
+    FK: tipologia references TipologiaAbbonamento(id)
+    v. ennupla: inizio <= fine
+
+Abbonamento(_id: serial_,inizio: date,comprato: Integer, tipologia: Integer)
+    FK: comprato references Cliente(id)
+    FK: tipologia references TipologiaAbbonamento(id)
+
+PostazioneLavoro(_id: IntegerGZ_)
+
+utilizza(_abbonamento: Integer,utente: Email_,postanzione: IntegerGZ)
+    FK: abbonamento references Abbonamento(id)
+    FK: utente references Utente(indEmail)
+    FK: postanzione references PostazioneLavoro(id)
+
+Accesso(_id: serial_,entrata: timestamp,*uscita: timestamp,utente: Email)
+    FK: utente references Utente(indEmail)
+    v. ennupla: uscita is null or entrata <= uscita
+
+ServizioOfferto(_id: serial_,nome: String,descrizione: Text, prezzoUnitario: Denaro)
+
+offre(_tipologia: Integer,servizio: Integer_,sconto: Percentuale,utilizzoPerMese: IntegerGZ)
+    FK: tipologia references TipologiaAbbonamento(id)
+    FK: servizio references ServizioOfferto(id)
+
+Utilizzo(_id: serial_,inizio: timestamp,fine: timestamp,unitaUtilizzate: IntegerGZ,servizio: Integer,utente: Email)
+    FK: servizio references ServizioOfferto(id)
+    FK: utente references Utente(indEmail)
+    v. ennupla: inizio <= fine
+

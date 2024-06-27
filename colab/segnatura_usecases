@@ -21,4 +21,4 @@
     10.1. mediaGiornaliera(I: Intervallo [0..*]): reale >= 0
     10.2. fattura(im: Impresa,i: Data,f: Data): Denaro
     10.3. serviziModa(k: intero > 0,i: Data,f: Data): ServizioOfferto [0..k]
-    10.4. clientiInutili(i: Data,f: Data): Utente [0..*]
+    10.4. utentiInutili(i: Data,f: Data): Utente [0..*]

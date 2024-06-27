@@ -1,0 +1,13 @@
+// Vincoli aggiunti
+
+[V.Cliente.complete]
+
+ALL c Cliente(c) -> EXISTS x i_isa_c(x,c) or p_isa_c(x,c)
+
+[V.Cliente.disjoint]
+
+NOT EXISTS c,i,p i_isa_c(i,c) and p_isa_c(p,c)
+
+[V.PossiedeImpresa.isa_possiede]
+
+ALL p,i possiedeImpresa(i,p) -> EXISTS c i_isa_c(i,c) and possiede(c,p)
