@@ -1,0 +1,78 @@
+1. Negozio
+    1.1. Ragione Sociale
+    1.2. indirizzo sede legale
+    1.3. almeno un indirizzo email
+    1.4. opzionalmente un numero di telefono
+    1.5. Può pubblicare offerte di Articoli (vedere 2) di vario genere
+
+2. Articolo/Scheda Tecnica (comune)
+    2.1. nome
+    2.2. descrizione articolo
+    2.3. marca {id2}
+    2.4. numero modello {id2}
+    2.5. categoria
+    2.6. insieme di Tag
+    2.7. codice identificativo secondo standard {id1}
+
+3. Offerta
+    3.1. articolo (vedere 2)
+    3.2. prezzo
+    3.3. istante di inizio
+    3.4. eventualmente fine
+    3.5. spesa di spedizione per nazione
+        3.5.1. la spesa di spedizione può essere diversa in base della quantità di articoli acquistati
+
+4. Segnalazione errore
+    4.1. Negozio
+    4.2. Scheda tecnica
+    4.3. descrizione
+
+5. Tipologia Buono Regalo
+    5.1. nome {id}
+    5.2. saldo
+    5.3. durata validità
+
+6. Buono Regalo
+    6.1. utente che l'ha acquistato
+    6.2. Utente che lo riceve
+    6.3. istante inizio
+    6.4. istante fine (operazione)
+    6.5. può essere associato ad un acquisto per abbattere il prezzo
+
+7. Utente Registrato
+    7.1. nickname  {id}
+    7.2. istante registrazione
+
+8. Wish List
+    8.1. pubbliche/private
+        8.1.1. se pubblica può essere consultata dagli amici dell'utente proprietario
+    8.2. utente proprietario {id}
+    8.3. nome {id}
+    
+9. Amicizia
+    9.1. è simmetrica
+    9.2. istaurata prima con una richiesta di amicizia e poi con una conferma
+
+USECASE
+
+    1. Utente Privato (anche non registrato)
+        1.1. navigare nella vetrina di tutti gli oggetti in vendita
+        1.2. consultare, per ognuno di essi, la scheda tecnica con codice identificativo univoco dell’articolo (una stringa secondo un certo standard globale), nome, marca, numero di modello, categoria, tag
+        1.3. accedere a tutte le offerte riguardanti l’articolo da parte dei diversi negozi
+        1.4.  visualizzare tutti gli oggetti in vendita di una data categoria e contenente un dato insieme di tag (mostrando, per ognuno, il prezzo più basso, comprensivo del costo di spedizione)
+        1.5. visualizzare gli articoli attualmente più moda, che sono gli articoli il cui volume di vendite è salito percentualmente di più nell’ultimo mese, rispetto alla media mensile dei due mesi precedenti.
+    
+    2. Negozio registrato
+        2.1. creazione di una scheda tecnica di un prodotto se non esiste già
+        2.2. creazione di un offerta per una certa scheda tecnica
+        2.3. deve permettere di segnalare un errore
+
+    3. Utenti Privati registrati
+        3.1. IS A Utente Privato
+        3.2. deve poter effettuare acquisti ed ottenere il prezzo totale
+
+    4. Sistema suggerimenti AmaZZon
+        4.1. se rileva un abbassamento di prezzo per un articolo in una wish list viene notificato l'utente
+
+    5. Management
+        5.1. calcolare, dato un periodo di tempo, il paese dal quale sono provenuti più acquisti nel periodo dato

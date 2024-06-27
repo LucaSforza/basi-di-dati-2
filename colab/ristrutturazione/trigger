@@ -49,3 +49,12 @@ controllo da effettuare:
     )
 
 6.Trigger V.Utilizzo.dentro_accesso_utente
+
+quando deve scattare: dopo INSERT(new) o UPDATE(new) di Utilizzo
+
+controllo da effettuare:
+    isError := not exists (
+        select
+        from 
+        where
+    )
