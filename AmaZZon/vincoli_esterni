@@ -1,0 +1,70 @@
+[V.IntervalloPerRiduzione.intervalli_attaccati_tra_di_loro]
+
+ALL i,n,o int_spe(i,n,o) and ALL i' inizio(i,i') and i' != 2 ->
+    EXISTS i_2 int_spe(i_2,n,o) and (ALL f fine(i_2,f) -> f = i' - 1)
+
+[V.IntervalloPerRiduzione.inizio_fine_coerenti]
+
+ALL i IntervalloPerRiduzione(i) and ALL i_1 inizio(i,i_1) and ALL f fine(i,f) -> i_1 <= f
+
+[V.IntervalloPerRiduzione.niente_overlapping]
+
+ALL i_1,i_2,n,o int_spe(i_1,n,o) and int_spe(i_2,n,o) and i_1 != i_2 ->
+    NOT EXISTS t (ALL x inizio(i_1,x) -> x <= t) and (ALL y inizio(i_2,y) -> y <= t)
+    and (ALL f_1 fine(i_1,f_1) -> t <= f_1) and (ALL f_2 fine(i_2,f_2) -> t <= f_2)
+
+[V.IntervalloPerRiduzione.non_esiste_una_fine]
+
+ALL i,n,o int_spe(i,n,o) -> EXISTS i' int_spe(i',n,o) and (NOT EXISTS t fine(i',t))
+
+[V.Offerta.niente_overlapping_tra_offerte_e_negozio]
+
+ALL o_1,o_2,n neg_off(n,o_1) and neg_off(n,o_2) and o_1 != o_2 and EXISTS a art_off(a,o_1) and art_off(a,o_2) ->
+    NOT EXISTS t (ALL i_1 inizio(o_1,i_1) -> i_1 <= t) and (ALL i_2 inizio(o_2,i_2) -> i_2 <= t)
+    and (ALL f_1 fine(o_1,f_1) -> t <= f_1) and (ALL o_2 fine(i_2,f_2) -> t <= f_2)
+
+[V.Offerta.inizio_fine_coerenti]
+
+ALL o,i,f Offerta(o) and inizio(o,i) and fine(o,f) -> i <= f
+
+[V.Acquisto.valore_buoni_regalo_non_supera_prezzo_senza_buoni]
+ALL a,p_1,p_2 prezzoSenzaBuoni_{Acquisto}(a,p_1) and valoreBuoni_{Acquisto}(a,p_2) -> p_1 >= p_2
+
+[V.Acquisto.buoni_associati_solo_se_validi]
+ALL a,b,i',i,f acq_buo(a,b) and istante(a,i') and inizio(b,i) and fine_{BuonoRegalo}(b,f) -> i' >= i and i' <= f
+
+[V.Acquisto.associato_ad_offerta_solo_se_rientra_nel_periodo_di_offerta]
+
+ALL assegnato(a,o) and inizio(o,i) and istante(a,i') -> i' >= i and (ALL f fine(o,f) -> i' <= f)
+
+[V.Acquisto.indirizzo_di_arrivo_nella_citta_tale_che_ha_spedizione]
+
+ALL a,c,o acq_cit(a,c) and assegnato(a,o) -> EXISTS n cit_naz(c,n) and spedizione(n,o)
+
+[V.Acquisto.buoni_regalo_sono_dell_utente]
+
+ALL a,b,u acq_buo(a,b) and acq_ute(a,u) -> possiede(b,u)
+
+[V.Utente.non_può_richiedere_amicizia_a_se_stesso]
+
+ALL x,y amiciziaPending(x,y) -> x != y
+
+[V.Utente.istante_iscrizione_coerente_con_acquisti]
+
+ALL a,u,i_1,i_2 acq_ute(a,u) and istante(a,i_1) and istanteReg(u,i_2) -> i_2 <= i_1
+
+[V.Utente.istante_iscrizione_coerente_con_buoni_regalo]
+
+ALL u,b,i,i' (possiede(b,u) or acquistatoDa(b,u)) and inizio(b,i) and istanteReg(u,i')-> i' <= i 
+
+[V.Acquisto.carta_di_credito_sia_effettivamente_dell_utente_che_ha_acquistato]
+
+ALL a,c,u acq_car(a,c) and acq_ute(a,u) -> car_ute(c,u)
+
+[V.CartaDiCredito.solo_per_acquisti_tale_che_non_sia_scaduta]
+
+ALL a,c,d,i acq_car(a,c) and dataScadenza(c,d) and istante(a,i) -> i < d
+
+[V.Acquisto.carta_di_credito_se_e_solo_se_quando_il_prezzo_maggiore_di_zero]
+
+ALL a Acquisto(a) -> (EXISTS c acq_car(a,c) <=> (ALL p prezzo_{Acquisto}(a,p) -> p > 0))

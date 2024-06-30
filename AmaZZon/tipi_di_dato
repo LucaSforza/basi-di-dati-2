@@ -1,0 +1,6 @@
+tipo RagSoc = stringa secondo standard
+tipo Ind = (via: Stringa,civico: Stringa secondo standard)
+tipo Tel = stringa secondo standard
+tipo Cod = stringa con standard global
+tipo Denaro = reale >= 0
+tipo NumCarta = stringa secondo standard di 16 cifre
